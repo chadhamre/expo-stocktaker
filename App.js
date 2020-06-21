@@ -11,7 +11,7 @@ import LocationScreen from './screens/LocationScreen'
 import InventoryScreen from './screens/InventoryScreen'
 import React, { useState, setState, useEffect } from 'react'
 import store from './redux/store'
-import { Spinner } from '../components/Spinner'
+import { Spinner } from './components/Spinner'
 import useCachedResources from './hooks/useCachedResources'
 import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
 
@@ -21,9 +21,7 @@ const App = () => {
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
-    return (
-      return <Spinner />
-    )
+    return <Spinner />
   } else {
     return (
       <StoreProvider store={store}>
