@@ -19,10 +19,12 @@
     "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.chadhamre.stocktaker"
+      "bundleIdentifier": "com.chadhamre.stocktaker",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "package": "com.chadhamre.stocktaker"
+      "versionCode": 1
     },
     "description": "Scan barcodes and update stock counts on Shopify.",
     "extra": {
