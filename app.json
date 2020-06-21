@@ -2,10 +2,7 @@
   "expo": {
     "name": "Stock Taker for Shopify",
     "slug": "stock-taker-shopify",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,9 +16,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "assets/images/*"
-    ],
+    "assetBundlePatterns": ["assets/images/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.chadhamre.stocktaker"
@@ -29,6 +24,9 @@
     "android": {
       "package": "com.chadhamre.stocktaker"
     },
-    "description": "Scan barcodes and update stock counts on Shopify."
+    "description": "Scan barcodes and update stock counts on Shopify.",
+    "extra": {
+      "SERVER_HOST": "https://server-stocktaker.herokuapp.com"
+    }
   }
 }

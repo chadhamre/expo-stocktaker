@@ -1,3 +1,4 @@
+import Constants from 'expo-constants'
 import { saveLocationReducer, saveServerErrorReducer } from '../redux/reducers'
 import { MonoText } from '../components/StyledText'
 import { reloadAsync } from 'expo-updates'
@@ -18,36 +19,37 @@ import Colors from '../constants/Colors'
 
 export default function LocationScreen() {
   // redux
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const saveLocation = response => dispatch(saveLocationReducer(response))
-  const saveServerError = response => dispatch(saveServerErrorReducer(response))
+  const saveLocation = (response) => dispatch(saveLocationReducer(response))
+  const saveServerError = (response) =>
+    dispatch(saveServerErrorReducer(response))
 
   const [locationList, setLocationList] = useState(null)
 
   useEffect(() => {
     ;(async () => {
-      await fetch('https://cycle-server.ngrok.io/api/locations', {
+      await fetch(`${Constants.manifest.extra.SERVER_HOST}/api/locations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${state.token}`,
         },
       })
-        .then(response => response.json())
-        .then(response => {
+        .then((response) => response.json())
+        .then((response) => {
           if (response.error && response.error.type === 'BAD_TOKEN') {
             saveServerError(response.error.message)
           } else {
             setLocationList(response)
           }
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err))
     })()
   }, [])
 
-  const LocationList = props => {
-    return props.locations.map(item => {
+  const LocationList = (props) => {
+    return props.locations.map((item) => {
       return (
         <View style={styles.buttonContainer} key={item.id}>
           <Button title={item.name} onPress={() => saveLocation(item)} />

@@ -1,3 +1,4 @@
+import Constants from 'expo-constants'
 import {
   updateShopifyReducer,
   clearScannedReducer,
@@ -24,9 +25,9 @@ import {
 
 export default function InventoryScreen() {
   // redux
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const updateShopify = status => dispatch(updateShopifyReducer(status))
+  const updateShopify = (status) => dispatch(updateShopifyReducer(status))
   const clearScanned = () => dispatch(clearScannedReducer())
   const clearInventory = () => dispatch(clearInventoryReducer())
 
@@ -94,7 +95,7 @@ export default function InventoryScreen() {
   async function updateInventory() {
     const deltas = []
     const overwrites = []
-    state.applyList.forEach(item => {
+    state.applyList.forEach((item) => {
       if (item.delta !== 0) {
         deltas.push({
           id: item.id.split('gid://shopify/InventoryItem/')[1],
@@ -111,7 +112,7 @@ export default function InventoryScreen() {
     })
 
     try {
-      await fetch('https://cycle-server.ngrok.io/api/update', {
+      await fetch(`${Constants.manifest.extra.SERVER_HOST}/api/update`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -123,8 +124,8 @@ export default function InventoryScreen() {
           overwrites,
         }),
       })
-        .then(response => response.json())
-        .then(async response => {
+        .then((response) => response.json())
+        .then(async (response) => {
           if (response.error) {
             setErrorMessage(response.error.message)
           }
@@ -140,7 +141,7 @@ export default function InventoryScreen() {
   }
 
   async function checkBatchStatus(batchId) {
-    await fetch('https://cycle-server.ngrok.io/api/status', {
+    await fetch(`${Constants.manifest.extra.SERVER_HOST}/api/status`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -150,8 +151,8 @@ export default function InventoryScreen() {
         batchId,
       }),
     })
-      .then(response => response.json())
-      .then(async response => {
+      .then((response) => response.json())
+      .then(async (response) => {
         if (response.pending === 0) {
           setPending(response.pending)
           setDone(response.done)
@@ -166,7 +167,7 @@ export default function InventoryScreen() {
   }
 
   async function handleSuccess() {
-    fetch('https://cycle-server.ngrok.io/api/summary', {
+    fetch(`${Constants.manifest.extra.SERVER_HOST}/api/summary`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -177,8 +178,8 @@ export default function InventoryScreen() {
         email: state.email,
       }),
     })
-      .then(response => response.json())
-      .then(response => {
+      .then((response) => response.json())
+      .then((response) => {
         console.log(response)
         clearScanned()
         clearInventory()
@@ -201,7 +202,7 @@ const requestInventory = async (
   try {
     const retryCount = retry + 1
     const inventory = await fetch(
-      'https://cycle-server.ngrok.io/api/inventory',
+      `${Constants.manifest.extra.SERVER_HOST}/api/inventory`,
       {
         method: 'POST',
         headers: {
@@ -212,7 +213,7 @@ const requestInventory = async (
           location: location,
         }),
       }
-    ).then(response => response.json())
+    ).then((response) => response.json())
 
     if (['CREATED', 'RUNNING'].includes(inventory.status)) {
       setTimeout(async () => {

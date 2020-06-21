@@ -1,3 +1,4 @@
+import Constants from 'expo-constants'
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { reloadAsync } from 'expo-updates'
@@ -7,9 +8,9 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 
 export default function AuthScreen(props) {
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const saveAuth = response => dispatch(saveAuthReducer(response))
+  const saveAuth = (response) => dispatch(saveAuthReducer(response))
 
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -26,7 +27,7 @@ export default function AuthScreen(props) {
     await loginToCycleServer(data)
   }
 
-  const makeNoise = async good => {
+  const makeNoise = async (good) => {
     try {
       let sound = require('../assets/sounds/beep.mp3')
       if (!good) sound = require('../assets/sounds/beepBad.mp3')
@@ -39,22 +40,22 @@ export default function AuthScreen(props) {
     }
   }
 
-  const loginToCycleServer = secret => {
-    fetch('https://cycle-server.ngrok.io/auth/login', {
+  const loginToCycleServer = (secret) => {
+    fetch(`${Constants.manifest.extra.SERVER_HOST}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ secret }),
     })
-      .then(response => {
+      .then((response) => {
         try {
           return response.json()
         } catch (err) {
           throw err
         }
       })
-      .then(response => {
+      .then((response) => {
         if (response.message === 'Denied') {
           throw response
         } else {
@@ -62,7 +63,7 @@ export default function AuthScreen(props) {
           saveAuth(response)
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         makeNoise()
         setTimeout(() => {

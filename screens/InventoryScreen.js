@@ -1,3 +1,4 @@
+import Constants from 'expo-constants'
 import { saveInventoryReducer } from '../redux/reducers'
 import { MonoText } from '../components/StyledText'
 import { Spinner } from '../components/Spinner'
@@ -18,9 +19,9 @@ import {
 
 export default function InventoryScreen() {
   // redux
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const saveInventory = response => dispatch(saveInventoryReducer(response))
+  const saveInventory = (response) => dispatch(saveInventoryReducer(response))
 
   const [attempts, setAttempts] = useState(0)
 
@@ -49,7 +50,7 @@ const requestInventory = async (
   try {
     const retryCount = retry + 1
     const inventory = await fetch(
-      'https://cycle-server.ngrok.io/api/inventory',
+      `${Constants.manifest.extra.SERVER_HOST}/api/inventory`,
       {
         method: 'POST',
         headers: {
@@ -60,7 +61,7 @@ const requestInventory = async (
           location: location,
         }),
       }
-    ).then(response => response.json())
+    ).then((response) => response.json())
 
     if (['CREATED', 'RUNNING'].includes(inventory.status)) {
       setTimeout(async () => {
