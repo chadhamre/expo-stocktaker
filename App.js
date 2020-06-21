@@ -21,7 +21,11 @@ const App = () => {
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
-    return <Spinner />
+    return (
+      <View style={{ flex: 1 }}>
+        <Image source={require('./assets/images/splash.png')} />
+      </View>
+    )
   } else {
     return (
       <StoreProvider store={store}>
@@ -32,7 +36,7 @@ const App = () => {
 }
 
 const AppNavigator = () => {
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
 
   if (state.serverError) return <ErrorScreen />
   if (!state.token) return <AuthScreen />

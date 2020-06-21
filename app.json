@@ -1,15 +1,12 @@
 {
   "expo": {
-    "name": "Cycle App",
-    "slug": "cycle-app",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "name": "Stock Taker for Shopify",
+    "slug": "stock-taker-shopify",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    "primaryColor": "#2f95dc",
     "scheme": "myapp",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -19,15 +16,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["assets/images/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chadhamre.stocktaker"
     },
-    "web": {
-      "favicon": "./assets/images/favicon.png"
+    "android": {
+      "package": "com.chadhamre.stocktaker"
     },
-    "description": ""
+    "description": "Scan barcodes and update stock counts on Shopify."
   }
 }
