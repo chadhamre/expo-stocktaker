@@ -12,8 +12,7 @@ import InventoryScreen from './screens/InventoryScreen'
 import React, { useState, setState, useEffect } from 'react'
 import store from './redux/store'
 import useCachedResources from './hooks/useCachedResources'
-import { Spinner } from './components/Spinner'
-import { Platform, StatusBar, StyleSheet, View } from 'react-native'
+import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
 
 const Stack = createStackNavigator()
 
