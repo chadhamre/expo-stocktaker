@@ -11,6 +11,7 @@ import LocationScreen from './screens/LocationScreen'
 import InventoryScreen from './screens/InventoryScreen'
 import React, { useState, setState, useEffect } from 'react'
 import store from './redux/store'
+import { Spinner } from '../components/Spinner'
 import useCachedResources from './hooks/useCachedResources'
 import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
 
@@ -21,9 +22,7 @@ const App = () => {
 
   if (!isLoadingComplete) {
     return (
-      <View style={{ flex: 1 }}>
-        <Image source={require('./assets/images/splash.png')} />
-      </View>
+      return <Spinner />
     )
   } else {
     return (
