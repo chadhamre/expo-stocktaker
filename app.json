@@ -1,13 +1,14 @@
 {
   "expo": {
-    "name": "Stock Taker for Shopify",
-    "slug": "stock-taker-shopify",
+    "name": "StockTaker",
+    "slug": "stock-taker",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "primaryColor": "#2f95dc",
-    "scheme": "myapp",
+    "privacy": "public",
+    "scheme": "demo",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -20,11 +21,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.chadhamre.stocktaker",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.1",
+      "icon": "./assets/images/icon.png"
     },
     "android": {
       "package": "com.chadhamre.stocktaker",
-      "versionCode": 1
+      "versionCode": 1,
+      "icon": "./assets/images/icon.png"
     },
     "description": "Scan barcodes and update stock counts on Shopify.",
     "extra": {
