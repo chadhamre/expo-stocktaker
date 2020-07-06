@@ -8,7 +8,7 @@ import ScanScreen from '../screens/ScanScreen'
 import ApplyScreen from '../screens/ApplyScreen'
 
 const BottomTab = createBottomTabNavigator()
-const INITIAL_ROUTE_NAME = 'Scan'
+const INITIAL_ROUTE_NAME = 'Home'
 
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) })

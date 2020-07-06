@@ -4,6 +4,7 @@ import {
   clearScannedReducer,
   clearInventoryReducer,
 } from '../redux/reducers'
+import { MaterialIcons } from '@expo/vector-icons'
 import { MonoText } from '../components/StyledText'
 import { Spinner } from '../components/Spinner'
 import { reloadAsync } from 'expo-updates'
@@ -56,9 +57,19 @@ export default function InventoryScreen() {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text style={styles.underline}>
-              {succeeded ? `Success` : `Failure`}
-            </Text>
+            <View>
+              {succeeded ? (
+                <View>
+                  <MaterialIcons
+                    name="check"
+                    size={100}
+                    color={Colors.lightGreen}
+                  />
+                </View>
+              ) : (
+                <Text style={styles.underline}>Failure</Text>
+              )}
+            </View>
           </View>
 
           <View style={styles.helpContainer}>
@@ -77,7 +88,9 @@ export default function InventoryScreen() {
           </View>
           <View style={styles.helpContainer}>
             {succeeded ? (
-              <Text>{`After clicking finish, an CSV will be emailed to ${state.email}`}</Text>
+              <Text
+                style={{ textAlign: 'center' }}
+              >{`After clicking finish, an CSV will be emailed to ${state.email}`}</Text>
             ) : null}
           </View>
         </ScrollView>
@@ -182,7 +195,7 @@ export default function InventoryScreen() {
       .then((response) => {
         console.log(response)
         clearScanned()
-        clearInventory()
+        clearInventory(false)
         updateShopify(false)
       })
   }

@@ -39,15 +39,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  badBadge: {
-    position: 'absolute',
-    right: 14,
-    top: -3,
-    backgroundColor: 'red',
-    borderRadius: 7,
-    width: 14,
-    height: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 })

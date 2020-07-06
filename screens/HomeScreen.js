@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as React from 'react'
 import Colors from '../constants/Colors'
 import { Button } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
 import {
   clearLocationReducer,
   clearInventoryReducer,
@@ -20,10 +21,10 @@ import {
   View,
 } from 'react-native'
 
-export default function HomeScreen() {
-  const state = useSelector(state => state)
+export default function HomeScreen({ navigation }) {
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const logout = response => dispatch(logoutReducer(response))
+  const logout = (response) => dispatch(logoutReducer(response))
   const clearLocation = () => dispatch(clearLocationReducer())
   const clearScanned = () => dispatch(clearScannedReducer())
   const clearInventory = () => dispatch(clearInventoryReducer())
@@ -63,34 +64,57 @@ export default function HomeScreen() {
         <View style={styles.actionContainer}>
           <View style={styles.buttonContainer}>
             <Button
+              buttonStyle={{
+                backgroundColor: Colors.lightGreen,
+              }}
+              icon={
+                <MaterialIcons
+                  style={{ marginRight: 8 }}
+                  name="camera-alt"
+                  size={24}
+                  color="white"
+                />
+              }
+              title={`Scan Barcode`}
+              onPress={() => navigation.jumpTo('Scan')}
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
               title={`Change Location`}
-              onPress={() => areYouSure(clearLocation)}
+              onPress={() => areYouSure(clearLocation, 'Change Location')}
             />
           </View>
 
           <View style={styles.buttonContainer}>
             <Button
-              title={`Update Barcodes`}
-              onPress={() => areYouSure(clearInventory)}
+              title={`Refresh Shopify Data`}
+              onPress={() => areYouSure(clearInventory, 'Refresh Data')}
             />
           </View>
 
           <View style={styles.buttonContainer}>
             <Button
+              type="outline"
               title={`Clear Scanned`}
-              onPress={() => areYouSure(clearScanned)}
+              onPress={() => areYouSure(clearScanned, 'Clear Data')}
             />
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button title={`Logout`} onPress={() => areYouSure(logout)} />
+            <Button
+              type="outline"
+              title={`Logout`}
+              onPress={() => areYouSure(logout, 'Logout')}
+            />
           </View>
         </View>
       </ScrollView>
     </View>
   )
 
-  function areYouSure(callBack) {
+  function areYouSure(callBack, confirm) {
     Alert.alert(
       'Are you sure?',
       'This action will clear the app of any barcodes you have already scanned.',
@@ -100,7 +124,7 @@ export default function HomeScreen() {
           onPress: () => {},
           style: 'cancel',
         },
-        { text: 'YES', onPress: callBack },
+        { text: confirm, onPress: callBack },
       ],
       { cancelable: false }
     )
@@ -121,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   actionContainer: {
-    paddingTop: 60,
+    paddingTop: 40,
   },
   pill: {
     textTransform: 'lowercase',

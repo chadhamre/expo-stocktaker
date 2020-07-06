@@ -34,7 +34,7 @@ export default function InventoryScreen() {
 
   return (
     <Spinner
-      labelTop={`downloading barcodes from shopify`}
+      labelTop={`Getting latest data from Shopify.`}
       labelBottom={attempts ? `${attempts} sec.` : '...'}
     />
   )

@@ -15,12 +15,12 @@ import {
 } from '../redux/reducers'
 
 export default function ApplyScreen() {
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
   const prepareApplyList = () => dispatch(prepareApplyListReducer())
-  const saveButtonIndex = index => dispatch(saveButtonIndexReducer(index))
+  const saveButtonIndex = (index) => dispatch(saveButtonIndexReducer(index))
   const toggleIncludeSiblings = () => dispatch(toggleIncludeSiblingsReducer())
-  const updateShopify = status => dispatch(updateShopifyReducer(status))
+  const updateShopify = (status) => dispatch(updateShopifyReducer(status))
 
   const [buttonIndex, setButtonIndex] = useState(0)
   const [display, setDisplay] = useState(0)
@@ -53,7 +53,7 @@ export default function ApplyScreen() {
           buttons={buttons}
           // onPress={setButtonIndex}
           selectedIndex={buttonIndex}
-          onPress={buttonIndex => handleButtonGroup(buttonIndex)}
+          onPress={(buttonIndex) => handleButtonGroup(buttonIndex)}
         ></ButtonGroup>
       </View>
       <ScrollView
@@ -111,7 +111,7 @@ export default function ApplyScreen() {
   }
 
   function BarcodeListGoodInner() {
-    return state.applyList.map(item => {
+    return state.applyList.map((item) => {
       const barcode = item.barcode
       return (
         <CountItem
@@ -213,7 +213,7 @@ export default function ApplyScreen() {
           onPress: () => {},
           style: 'cancel',
         },
-        { text: 'YES', onPress: () => updateShopify(true) },
+        { text: 'Update', onPress: () => updateShopify(true) },
       ],
       { cancelable: false }
     )
