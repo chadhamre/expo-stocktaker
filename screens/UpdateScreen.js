@@ -193,9 +193,8 @@ export default function InventoryScreen() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response)
-        clearScanned()
         clearInventory(false)
+        clearScanned()
         updateShopify(false)
       })
   }
