@@ -75,7 +75,7 @@ export default function HomeScreen({ navigation }) {
                   color="white"
                 />
               }
-              title={`Scan Barcode`}
+              title={`Scan Barcodes`}
               onPress={() => navigation.jumpTo('Scan')}
             />
           </View>

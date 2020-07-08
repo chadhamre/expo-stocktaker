@@ -10,22 +10,27 @@ import LinkingConfiguration from './navigation/LinkingConfiguration'
 import LocationScreen from './screens/LocationScreen'
 import InventoryScreen from './screens/InventoryScreen'
 import React, { useState, setState, useEffect } from 'react'
-import store from './redux/store'
 import { Spinner } from './components/Spinner'
 import useCachedResources from './hooks/useCachedResources'
 import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
+import { getStore, getPersistor } from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react'
 
 const Stack = createStackNavigator()
 
 const App = () => {
+  const myStore = getStore()
+  const myPersistor = getPersistor()
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
     return <Spinner />
   } else {
     return (
-      <StoreProvider store={store}>
-        <AppNavigator />
+      <StoreProvider store={myStore}>
+        <PersistGate persistor={myPersistor} loading={<Spinner />}>
+          <AppNavigator />
+        </PersistGate>
       </StoreProvider>
     )
   }

@@ -3,7 +3,7 @@
     "name": "StockTaker",
     "slug": "stock-taker",
     "platforms": ["ios", "android"],
-    "version": "1.0.3",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "primaryColor": "#2f95dc",
@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.chadhamre.stocktaker",
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.4",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "NSCameraUsageDescription": "StockTaker requires camera access to allow you to scan barcodes using the camera."
@@ -29,7 +29,7 @@
     },
     "android": {
       "package": "com.chadhamre.stocktaker",
-      "versionCode": 3,
+      "versionCode": 4,
       "icon": "./assets/images/icon.png"
     },
     "description": "Scan barcodes and update stock counts on Shopify.",
