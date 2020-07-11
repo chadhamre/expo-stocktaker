@@ -3,6 +3,7 @@ import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
+import { Spinner } from '../components/Spinner'
 import { useSelector, useDispatch } from 'react-redux'
 import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
@@ -74,7 +75,7 @@ export default function AuthScreen(props) {
   }
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>
+    return <Spinner />
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>

@@ -1,12 +1,13 @@
 import { Audio } from 'expo-av'
-import { MonoText } from '../components/StyledText'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import React, { useState, useEffect } from 'react'
+import { MonoText } from '../components/StyledText'
+import { saveGoodScanReducer, saveBadScanReducer } from '../redux/reducers'
+import { Spinner } from '../components/Spinner'
+import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
-import { saveGoodScanReducer, saveBadScanReducer } from '../redux/reducers'
-import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import Colors from '../constants/Colors'
+import React, { useState, useEffect } from 'react'
 
 const blankLatest = {
   title: null,
@@ -16,10 +17,10 @@ const blankLatest = {
 }
 
 export default function ScanScreen(props) {
-  const state = useSelector(state => state)
+  const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const saveGoodScan = response => dispatch(saveGoodScanReducer(response))
-  const saveBadScan = response => dispatch(saveBadScanReducer(response))
+  const saveGoodScan = (response) => dispatch(saveGoodScanReducer(response))
+  const saveBadScan = (response) => dispatch(saveBadScanReducer(response))
 
   const [hasPermission, setHasPermission] = useState(null)
   const [scanned, setScanned] = useState(false)
@@ -46,10 +47,10 @@ export default function ScanScreen(props) {
     setScanned(true)
     findBarcode(data)
 
-    await unlockScanner(2000)
+    await unlockScanner(3000)
   }
 
-  const makeNoise = async good => {
+  const makeNoise = async (good) => {
     try {
       let sound = require('../assets/sounds/beep.mp3')
       if (!good) sound = require('../assets/sounds/beepBad.mp3')
@@ -62,7 +63,7 @@ export default function ScanScreen(props) {
     }
   }
 
-  const unlockScanner = async delay => {
+  const unlockScanner = async (delay) => {
     try {
       return await setTimeout(() => {
         setScanned(false)
@@ -72,7 +73,7 @@ export default function ScanScreen(props) {
     }
   }
 
-  const findBarcode = barcode => {
+  const findBarcode = (barcode) => {
     if (state.inventory[barcode]) {
       makeNoise(true)
       setLatest(state.inventory[barcode])
@@ -92,7 +93,7 @@ export default function ScanScreen(props) {
   // Render
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>
+    return <Spinner />
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>
@@ -108,43 +109,41 @@ export default function ScanScreen(props) {
       }}
     >
       <View
-        style={
+        style={[
           latest.barcode
             ? latest.bad
               ? styles.badBorder
               : styles.goodBorder
-            : styles.header
-        }
+            : styles.header,
+        ]}
       >
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'white',
-            justifyContent: 'center',
-          }}
-        >
-          {!latest.barcode ? (
-            <View style={styles.container}>
-              <Image
-                source={require('../assets/images/barcode.png')}
-                style={styles.barcodeImage}
-              />
+        {!latest.barcode ? (
+          <View style={styles.container}>
+            <Image
+              source={require('../assets/images/barcode.png')}
+              style={styles.barcodeImage}
+              resizeMode="contain"
+            />
+          </View>
+        ) : (
+          <View style={styles.textContainer}>
+            <View style={styles.innerContainer}>
+              <Text style={styles.title}>{latest.title}</Text>
+              <Text>
+                {latest.barcode ? `barcode: ` : null}{' '}
+                <MonoText>{latest.barcode}</MonoText>
+              </Text>
+              <Text>{latest.sku ? `sku: ${latest.sku}` : null}</Text>
+              <Text>
+                {latest.available !== null
+                  ? `stock: ${latest.available} available`
+                  : null}
+              </Text>
             </View>
-          ) : null}
-          <Text style={styles.title}>{latest.title}</Text>
-          <Text>
-            {latest.barcode ? `barcode: ` : null}{' '}
-            <MonoText>{latest.barcode}</MonoText>
-          </Text>
-          <Text>{latest.sku ? `sku: ${latest.sku}` : null}</Text>
-          <Text>
-            {latest.available !== null
-              ? `stock: ${latest.available} available`
-              : null}
-          </Text>
-        </View>
+          </View>
+        )}
       </View>
-      <View style={{ flex: 6 }}>
+      <View style={{ flex: 4 }}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
@@ -157,10 +156,16 @@ export default function ScanScreen(props) {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    height: 150,
+    height: '100%',
     alignItems: 'center',
-    padding: 16,
+    justifyContent: 'space-around',
   },
+  textContainer: {
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+  },
+
   goodBorder: {
     backgroundColor: 'white',
     flex: 1,
@@ -169,6 +174,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     marginLeft: 16,
     marginBottom: 8,
+    marginTop: 8,
+    display: 'flex',
   },
   badBorder: {
     backgroundColor: 'white',
@@ -177,6 +184,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 6,
     paddingLeft: 8,
     marginLeft: 16,
+    marginTop: 8,
     marginBottom: 8,
   },
   header: {
@@ -190,6 +198,6 @@ const styles = StyleSheet.create({
   barcodeImage: {
     flex: 1,
     opacity: 0.2,
-    height: 50,
+    width: 200,
   },
 })
