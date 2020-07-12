@@ -1,7 +1,7 @@
 import Constants from 'expo-constants'
 import { saveInventoryReducer } from '../redux/reducers'
 import { MonoText } from '../components/StyledText'
-import { Spinner } from '../components/Spinner'
+import { SpinnerScreen } from '../components/SpinnerScreen'
 import { reloadAsync } from 'expo-updates'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useSelector, useDispatch } from 'react-redux'
@@ -33,7 +33,7 @@ export default function InventoryScreen() {
   }, [])
 
   return (
-    <Spinner
+    <SpinnerScreen
       labelTop={`Getting latest data from Shopify.`}
       labelBottom={attempts ? `${attempts} sec.` : '...'}
     />

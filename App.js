@@ -42,6 +42,7 @@ const App = () => {
       <StoreProvider store={myStore}>
         <PersistGate persistor={myPersistor} loading={<Spinner />}>
           <SafeAreaView style={styles.safeArea}></SafeAreaView>
+          <StatusBar barStyle="light-content" />
           <AppNavigator />
           <SafeAreaView style={styles.safeArea}></SafeAreaView>
         </PersistGate>
@@ -61,7 +62,6 @@ const AppNavigator = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
       <NavigationContainer linking={LinkingConfiguration}>
         <Stack.Navigator>
           <Stack.Screen

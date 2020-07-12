@@ -1,12 +1,14 @@
-import Constants from 'expo-constants'
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
 import { Spinner } from '../components/Spinner'
-import { useSelector, useDispatch } from 'react-redux'
-import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
+import Colors from '../constants/Colors'
+import Constants from 'expo-constants'
+import React, { useState, useEffect } from 'react'
+import { sharedStyles } from '../constants/Styles'
 
 export default function AuthScreen(props) {
   const state = useSelector((state) => state)
@@ -20,7 +22,7 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // loginToCycleServer('dcf1bd57-fd9e-498a-88ed-71206a55329a')
+      loginToCycleServer('dcf1bd57-fd9e-498a-88ed-71206a55329a')
     })()
   }, [])
 
@@ -82,30 +84,27 @@ export default function AuthScreen(props) {
   }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-      }}
-    >
-      <View style={styles.top}>
-        <Text style={styles.tabBarInfoText}>Sign In</Text>
-      </View>
-      <View style={{ flex: 6 }}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleQRCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
-      </View>
-      <View style={styles.bottom}>
-        <Text style={styles.centerText}>
-          Log into our App on your Shopify desktop to see your sign in QR code.
-        </Text>
-        <Image
-          source={require('../assets/images/qrcode.png')}
-          style={styles.qrImage}
-        />
+    <View style={sharedStyles.outerRoundedContainer}>
+      <View style={sharedStyles.innerRoundedContainer}>
+        <View style={styles.top}>
+          <Text style={styles.tabBarInfoText}>Sign In</Text>
+        </View>
+        <View style={{ flex: 6 }}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleQRCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+        </View>
+        <View style={styles.bottom}>
+          <Text style={styles.centerText}>
+            Log into our App on your Shopify desktop to see your sign in QR
+            code.
+          </Text>
+          <Image
+            source={require('../assets/images/qrcode.png')}
+            style={styles.qrImage}
+          />
+        </View>
       </View>
     </View>
   )

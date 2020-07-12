@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     flex: 4,
     width: '100%',
     backgroundColor: Colors.darkest,
+    marginBottom: 10,
   },
   topSection: {
     flex: 1,
