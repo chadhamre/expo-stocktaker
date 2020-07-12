@@ -67,8 +67,10 @@ function getHeaderTitle(route) {
 }
 
 const tabBarOptions = {
+  showLabel: false,
+  adaptive: true,
   style: {
     height: Platform.OS === 'ios' ? 96 : 60,
-    paddingTop: Platform.OS === 'ios' ? 12 : 0,
+    paddingTop: Platform.OS === 'ios' ? 12 : -4,
   },
 }
