@@ -9,7 +9,7 @@ export function Spinner(props) {
   return (
     <View style={[styles.container, styles.horizontal]}>
       <View>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color={Colors.darkest} />
         {props.labelTop ? (
           <View>
             <Text style={styles.centerText}>{props.labelTop}</Text>
