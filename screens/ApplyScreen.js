@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 14,
     marginBottom: 14,
-    paddingLeft: '15%',
-    paddingRight: '15%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
 })

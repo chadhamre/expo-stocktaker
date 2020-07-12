@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingTop: 5,
     paddingBottom: 5,
-    paddingLeft: '15%',
-    paddingRight: '15%',
+    paddingLeft: '10%',
+    paddingRight: '10%',
   },
 })

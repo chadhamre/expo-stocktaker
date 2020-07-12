@@ -6,12 +6,14 @@ import TabBarIconWithBadge from '../components/TabBarIconWithBadge'
 import HomeScreen from '../screens/HomeScreen'
 import ScanScreen from '../screens/ScanScreen'
 import ApplyScreen from '../screens/ApplyScreen'
-
 const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
+import Colors from '../constants/Colors'
 
 export default function BottomTabNavigator({ navigation, route }) {
-  navigation.setOptions({ headerTitle: getHeaderTitle(route) })
+  navigation.setOptions({
+    headerTitle: getHeaderTitle(route),
+  })
 
   return (
     <BottomTab.Navigator
@@ -69,8 +71,10 @@ function getHeaderTitle(route) {
 const tabBarOptions = {
   showLabel: false,
   adaptive: true,
+  activeBackgroundColor: Colors.darkGrey,
+  inactiveBackgroundColor: Colors.darkGrey,
   style: {
-    height: Platform.OS === 'ios' ? 96 : 60,
-    paddingTop: Platform.OS === 'ios' ? 12 : -4,
+    // height: Platform.OS === 'ios' ? 96 : 60,
+    // paddingTop: Platform.OS === 'ios' ? 12 : -4,
   },
 }
