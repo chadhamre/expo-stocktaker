@@ -102,14 +102,14 @@ export default function ScanScreen(props) {
   return (
     <View
       style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        backgroundColor: 'white',
+        height: '100%',
+        display: 'flex',
+        backgroundColor: Colors.lightest,
       }}
     >
       <View
         style={[
+          styles.topSection,
           latest.barcode
             ? latest.bad
               ? styles.badBorder
@@ -143,10 +143,10 @@ export default function ScanScreen(props) {
           </View>
         )}
       </View>
-      <View style={{ flex: 4 }}>
+      <View style={styles.barCodeScannerContainer}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
+          style={styles.scanner}
         />
       </View>
     </View>
@@ -154,6 +154,15 @@ export default function ScanScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  barCodeScannerContainer: {
+    flex: 4,
+    width: '100%',
+    backgroundColor: Colors.darkest,
+  },
+  topSection: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     display: 'flex',
     height: '100%',
@@ -167,8 +176,6 @@ const styles = StyleSheet.create({
   },
 
   goodBorder: {
-    backgroundColor: 'white',
-    flex: 1,
     borderLeftColor: Colors.tintColor,
     borderLeftWidth: 6,
     paddingLeft: 8,
@@ -178,8 +185,6 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   badBorder: {
-    backgroundColor: 'white',
-    flex: 1,
     borderLeftColor: 'red',
     borderLeftWidth: 6,
     paddingLeft: 8,
@@ -189,7 +194,6 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'white',
-    flex: 1,
   },
   title: {
     fontWeight: 'bold',
@@ -199,5 +203,8 @@ const styles = StyleSheet.create({
     flex: 1,
     opacity: 0.2,
     width: 200,
+  },
+  scanner: {
+    flex: 1,
   },
 })
