@@ -70,7 +70,7 @@ const AppNavigator = () => {
             options={{
               headerTintColor: Colors.lightGrey,
               headerStyle: {
-                backgroundColor: Colors.darkGrey,
+                backgroundColor: Colors.darkest,
               },
             }}
           />
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   safeArea: {
-    backgroundColor: Colors.darkGrey,
+    backgroundColor: Colors.darkest,
   },
 })
 

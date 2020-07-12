@@ -71,8 +71,8 @@ function getHeaderTitle(route) {
 const tabBarOptions = {
   showLabel: false,
   adaptive: true,
-  activeBackgroundColor: Colors.darkGrey,
-  inactiveBackgroundColor: Colors.darkGrey,
+  activeBackgroundColor: Colors.darkest,
+  inactiveBackgroundColor: Colors.darkest,
   style: {
     // height: Platform.OS === 'ios' ? 96 : 60,
     // paddingTop: Platform.OS === 'ios' ? 12 : -4,
