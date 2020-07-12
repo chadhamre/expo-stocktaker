@@ -18,56 +18,56 @@ export const UPDATE_SHOPIFY = 'UPDATE_SHOPIFY'
 export const LOGOUT = 'LOGOUT'
 
 // Action Creators
-export const saveAuthReducer = response => {
+export const saveAuthReducer = (response) => {
   return {
     type: SAVE_AUTH,
     response: response,
   }
 }
 
-export const saveServerErrorReducer = error => {
+export const saveServerErrorReducer = (error) => {
   return {
     type: SAVE_SERVER_ERROR,
     error,
   }
 }
 
-export const saveLocationReducer = selection => {
+export const saveLocationReducer = (selection) => {
   return {
     type: SAVE_LOCATION,
     selection: selection,
   }
 }
 
-export const saveInventoryReducer = inventory => {
+export const saveInventoryReducer = (inventory) => {
   return {
     type: SAVE_INVENTORY,
     inventory: inventory,
   }
 }
 
-export const saveGoodScanReducer = barcode => {
+export const saveGoodScanReducer = (barcode) => {
   return {
     type: ADD_GOOD_SCAN,
     barcode,
   }
 }
 
-export const saveBadScanReducer = barcode => {
+export const saveBadScanReducer = (barcode) => {
   return {
     type: ADD_BAD_SCAN,
     barcode,
   }
 }
 
-export const addSiblingsReducer = barcodes => {
+export const addSiblingsReducer = (barcodes) => {
   return {
     type: ADD_SIBLINGS,
     barcodes,
   }
 }
 
-export const saveButtonIndexReducer = buttonIndex => {
+export const saveButtonIndexReducer = (buttonIndex) => {
   return {
     type: SAVE_BUTTON_INDEX,
     buttonIndex,
@@ -116,7 +116,7 @@ export const clearServerErrorReducer = () => {
   }
 }
 
-export const updateShopifyReducer = status => {
+export const updateShopifyReducer = (status) => {
   return {
     type: UPDATE_SHOPIFY,
     status,
@@ -131,21 +131,21 @@ export const logoutReducer = () => {
 
 // Reducer
 const initialState = {
-  shop: null,
-  email: null,
-  token: null,
-  locationName: null,
-  locationId: null,
-  inventory: null,
-  scannedGood: {},
-  scannedGoodTotal: 0,
-  scannedBad: {},
-  scannedBadTotal: 0,
-  includeSiblings: false,
-  siblings: {},
   applyList: [],
   buttonIndex: 0,
+  email: null,
+  includeSiblings: false,
+  inventory: null,
+  locationId: null,
+  locationName: null,
+  scannedBad: {},
+  scannedBadTotal: 0,
+  scannedGood: {},
+  scannedGoodTotal: 0,
   serverError: null,
+  shop: null,
+  siblings: {},
+  token: null,
   updateShopify: false,
 }
 
@@ -195,6 +195,7 @@ export default (state = initialState, action) => {
     case CLEAR_SCANNED:
       return {
         ...state,
+        applyList: [],
         scannedGood: {},
         scannedGoodTotal: 0,
         scannedBad: {},
@@ -216,6 +217,7 @@ export default (state = initialState, action) => {
     case ADD_GOOD_SCAN:
       const newGoodState = {
         ...state,
+        scannedGood: { ...state.scannedGood },
         scannedGoodTotal: state.scannedGoodTotal + 1,
       }
 
@@ -231,6 +233,7 @@ export default (state = initialState, action) => {
     case ADD_BAD_SCAN:
       const newBadState = {
         ...state,
+        scannedBad: { ...state.scannedBad },
         scannedBadTotal: state.scannedBadTotal + 1,
       }
 
@@ -246,10 +249,10 @@ export default (state = initialState, action) => {
       const siblings = []
       if (state.includeSiblings) {
         const products = barcodes.map(
-          barcode => state.inventory[barcode].product
+          (barcode) => state.inventory[barcode].product
         )
 
-        Object.keys(state.inventory).forEach(barcode => {
+        Object.keys(state.inventory).forEach((barcode) => {
           if (
             products.includes(state.inventory[barcode].product) &&
             !barcodes.includes(barcode)
@@ -261,7 +264,7 @@ export default (state = initialState, action) => {
 
       barcodes.push.apply(barcodes, siblings)
 
-      const applyList = barcodes.map(barcode => {
+      const applyList = barcodes.map((barcode) => {
         const applyItem = state.inventory[barcode]
 
         if (state.buttonIndex === 0 && state.scannedGood[barcode] > 0) {

@@ -1,3 +1,7 @@
+// if (__DEV__) {
+//   import('./reactotron.config').then(() => console.log('Reactotron Configured'))
+// }
+
 import { createStackNavigator } from '@react-navigation/stack'
 import { getStore, getPersistor } from './redux/store'
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native'

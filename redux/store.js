@@ -16,6 +16,7 @@ const store = createStore(
 )
 
 const persistor = persistStore(store)
+// persistor.purge()
 
 const getPersistor = () => persistor
 const getStore = () => store
