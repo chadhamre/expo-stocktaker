@@ -2,7 +2,7 @@ import { Button } from 'react-native-elements'
 import { logoutReducer } from '../redux/reducers'
 import { reloadAsync } from 'expo-updates'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Spinner } from '../components/Spinner'
+import { SpinnerScreen } from '../components/SpinnerScreen'
 import { useSelector, useDispatch } from 'react-redux'
 import Colors from '../constants/Colors'
 import React, { useState, useEffect } from 'react'
@@ -42,7 +42,7 @@ export default function LocationScreen() {
         </ScrollView>
       </View>
     )
-  } else return <Spinner />
+  } else return <SpinnerScreen />
 }
 
 const styles = StyleSheet.create({

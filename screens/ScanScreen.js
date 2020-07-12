@@ -2,7 +2,7 @@ import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { MonoText } from '../components/StyledText'
 import { saveGoodScanReducer, saveBadScanReducer } from '../redux/reducers'
-import { Spinner } from '../components/Spinner'
+import { SpinnerScreen } from '../components/SpinnerScreen'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
@@ -93,7 +93,7 @@ export default function ScanScreen(props) {
   // Render
 
   if (hasPermission === null) {
-    return <Spinner />
+    return <SpinnerScreen />
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>
@@ -156,9 +156,7 @@ export default function ScanScreen(props) {
 const styles = StyleSheet.create({
   barCodeScannerContainer: {
     flex: 4,
-    width: '100%',
-    backgroundColor: Colors.darkest,
-    marginBottom: 10,
+    margin: 10,
   },
   topSection: {
     flex: 1,

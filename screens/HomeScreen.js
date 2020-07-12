@@ -1,5 +1,4 @@
 import { ScrollView } from 'react-native-gesture-handler'
-import { Spinner } from '../components/Spinner'
 import { useSelector, useDispatch } from 'react-redux'
 import * as React from 'react'
 import Colors from '../constants/Colors'

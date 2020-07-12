@@ -15,7 +15,7 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { Provider as StoreProvider } from 'react-redux'
-import { Spinner } from './components/Spinner'
+import { SpinnerScreen } from './components/SpinnerScreen'
 import { useSelector, useDispatch } from 'react-redux'
 import AuthScreen from './screens/AuthScreen'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
@@ -36,11 +36,11 @@ const App = () => {
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
-    return <Spinner />
+    return <SpinnerScreen />
   } else {
     return (
       <StoreProvider store={myStore}>
-        <PersistGate persistor={myPersistor} loading={<Spinner />}>
+        <PersistGate persistor={myPersistor} loading={<SpinnerScreen />}>
           <SafeAreaView style={styles.safeArea}></SafeAreaView>
           <StatusBar barStyle="light-content" />
           <AppNavigator />

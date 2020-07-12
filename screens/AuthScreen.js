@@ -2,7 +2,7 @@ import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
-import { Spinner } from '../components/Spinner'
+import { SpinnerScreen } from '../components/SpinnerScreen'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import Colors from '../constants/Colors'
@@ -77,7 +77,7 @@ export default function AuthScreen(props) {
   }
 
   if (hasPermission === null) {
-    return <Spinner />
+    return <SpinnerScreen />
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>

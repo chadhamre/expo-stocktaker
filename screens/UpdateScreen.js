@@ -104,7 +104,7 @@ export default function InventoryScreen() {
   return (
     <SpinnerScreen
       labelTop={`Updating inventory on Shopify`}
-      labelBottom={pending ? `${pending} remaining` : ''}
+      labelBottom={pending ? `${pending} remaining...` : ''}
     />
   )
 
