@@ -16,6 +16,8 @@ const sharedStyles = StyleSheet.create({
     borderColor: Colors.darkest,
     borderWidth: 1,
     borderRadius: 39,
+    marginTop: 56,
+    marginBottom: 62,
   },
   outerRoundedContainer: {
     flex: 1,
