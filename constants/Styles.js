@@ -2,6 +2,10 @@ import { StyleSheet } from 'react-native'
 import Colors from './Colors'
 
 const sharedStyles = StyleSheet.create({
+  lightContainer: {
+    flex: 1,
+    backgroundColor: Colors.lightest,
+  },
   buttonContainer: {
     paddingTop: 5,
     paddingBottom: 5,

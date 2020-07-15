@@ -17,18 +17,66 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
-export default function InventoryScreen() {
+export default function InventoryScreen({ navigation }) {
   // redux
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
   const saveInventory = (response) => dispatch(saveInventoryReducer(response))
+
+  const requestInventory = async (
+    location,
+    token,
+    setAttempts,
+    saveInventory,
+    retry = 0
+  ) => {
+    try {
+      const retryCount = retry + 1
+      const inventory = await fetch(
+        `${Constants.manifest.extra.SERVER_HOST}/api/inventory`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            location: location,
+          }),
+        }
+      ).then((response) => response.json())
+
+      if (['CREATED', 'RUNNING'].includes(inventory.status)) {
+        setTimeout(async () => {
+          setAttempts(retryCount)
+          await requestInventory(
+            location,
+            token,
+            setAttempts,
+            saveInventory,
+            retryCount
+          )
+        }, 1000)
+      } else {
+        saveInventory(inventory.inventory)
+        navigation.navigate('Home')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const [attempts, setAttempts] = useState(0)
 
   useEffect(() => {
     ;(async () => {
       const locationId = state.locationId.split('gid://shopify/Location/')[1]
-      requestInventory(locationId, state.token, setAttempts, saveInventory)
+      await requestInventory(
+        locationId,
+        state.token,
+        setAttempts,
+        saveInventory
+      )
     })()
   }, [])
 
@@ -38,46 +86,4 @@ export default function InventoryScreen() {
       labelBottom={attempts ? `${attempts} sec.` : '...'}
     />
   )
-}
-
-const requestInventory = async (
-  location,
-  token,
-  setAttempts,
-  saveInventory,
-  retry = 0
-) => {
-  try {
-    const retryCount = retry + 1
-    const inventory = await fetch(
-      `${Constants.manifest.extra.SERVER_HOST}/api/inventory`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          location: location,
-        }),
-      }
-    ).then((response) => response.json())
-
-    if (['CREATED', 'RUNNING'].includes(inventory.status)) {
-      setTimeout(async () => {
-        setAttempts(retryCount)
-        await requestInventory(
-          location,
-          token,
-          setAttempts,
-          saveInventory,
-          retryCount
-        )
-      }, 1000)
-    } else {
-      saveInventory(inventory.inventory)
-    }
-  } catch (err) {
-    console.log(err)
-  }
 }

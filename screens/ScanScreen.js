@@ -16,7 +16,7 @@ const blankLatest = {
   bad: false,
 }
 
-export default function ScanScreen(props) {
+export default function ScanScreen({ navigation }) {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
   const saveGoodScan = (response) => dispatch(saveGoodScanReducer(response))
@@ -41,7 +41,7 @@ export default function ScanScreen(props) {
 
   const handleBarCodeScanned = async ({ type, data }) => {
     // If this tab is not focussed, exit handler.
-    if (!props.navigation.isFocused()) return undefined
+    if (!navigation.isFocused()) return undefined
 
     // Otherwise save barcode
     setScanned(true)
@@ -97,6 +97,23 @@ export default function ScanScreen(props) {
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>
+  }
+
+  if (state.serverError) {
+    navigation.navigate('ErrorScreen')
+    return null
+  } else if (!state.token) {
+    navigation.navigate('AuthScreen')
+    return null
+  } else if (!state.locationName) {
+    navigation.navigate('LocationScreen')
+    return null
+  } else if (!state.inventory) {
+    navigation.navigate('InventoryScreen')
+    return null
+  } else if (state.updateShopify) {
+    navigation.navigate('UpdateScreen')
+    return null
   }
 
   return (

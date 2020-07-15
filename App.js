@@ -2,10 +2,25 @@
 //   import('./reactotron.config').then(() => console.log('Reactotron Configured'))
 // }
 
+import AuthScreen from './screens/AuthScreen'
+import BottomTabNavigator from './navigation/BottomTabNavigator'
+import Colors from './constants/Colors'
+import ErrorScreen from './screens/ErrorScreen'
+import InventoryScreen from './screens/InventoryScreen'
+import LinkingConfiguration from './navigation/LinkingConfiguration'
+import LocationScreen from './screens/LocationScreen'
+import React, { useState, setState, useEffect } from 'react'
+import UpdateScreen from './screens/UpdateScreen'
+import useCachedResources from './hooks/useCachedResources'
+
 import { createStackNavigator } from '@react-navigation/stack'
 import { getStore, getPersistor } from './redux/store'
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Provider as StoreProvider } from 'react-redux'
+import { sharedStyles } from './constants/Styles'
+import { SpinnerScreen } from './components/SpinnerScreen'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Platform,
   StatusBar,
@@ -14,21 +29,9 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native'
-import { Provider as StoreProvider } from 'react-redux'
-import { SpinnerScreen } from './components/SpinnerScreen'
-import { useSelector, useDispatch } from 'react-redux'
-import AuthScreen from './screens/AuthScreen'
-import BottomTabNavigator from './navigation/BottomTabNavigator'
-import ErrorScreen from './screens/ErrorScreen'
-import InventoryScreen from './screens/InventoryScreen'
-import LinkingConfiguration from './navigation/LinkingConfiguration'
-import LocationScreen from './screens/LocationScreen'
-import React, { useState, setState, useEffect } from 'react'
-import UpdateScreen from './screens/UpdateScreen'
-import useCachedResources from './hooks/useCachedResources'
-import Colors from './constants/Colors'
 
-const Stack = createStackNavigator()
+const MainStack = createStackNavigator()
+const RootStack = createStackNavigator()
 
 const App = () => {
   const myStore = getStore()
@@ -54,37 +57,50 @@ const App = () => {
 const AppNavigator = () => {
   const state = useSelector((state) => state)
 
-  if (state.serverError) return <ErrorScreen />
-  if (!state.token) return <AuthScreen />
-  if (!state.locationName) return <LocationScreen />
-  if (!state.inventory) return <InventoryScreen />
-  if (state.updateShopify) return <UpdateScreen />
-
   return (
-    <View style={styles.container}>
+    <View style={sharedStyles.lightContainer}>
       <NavigationContainer linking={LinkingConfiguration}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Root"
-            component={BottomTabNavigator}
-            options={{
-              headerTintColor: Colors.lightGrey,
-              headerStyle: {
-                backgroundColor: Colors.darkest,
-              },
-            }}
-          />
-        </Stack.Navigator>
+        <RootStackScreen />
       </NavigationContainer>
     </View>
   )
 }
 
+const RootStackScreen = () => {
+  return (
+    <RootStack.Navigator
+      mode="modal"
+      headerMode="none"
+      screenOptions={{ animationEnabled: false }}
+    >
+      <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
+      <RootStack.Screen name="LocationScreen" component={LocationScreen} />
+      <RootStack.Screen name="InventoryScreen" component={InventoryScreen} />
+      <RootStack.Screen name="ErrorScreen" component={ErrorScreen} />
+      <RootStack.Screen name="AuthScreen" component={AuthScreen} />
+      <RootStack.Screen name="UpdateScreen" component={UpdateScreen} />
+    </RootStack.Navigator>
+  )
+}
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator>
+      <MainStack.Screen
+        name="BottomTabNavigator"
+        component={BottomTabNavigator}
+        options={{
+          headerTintColor: Colors.lightGrey,
+          headerStyle: {
+            backgroundColor: Colors.darkest,
+          },
+        }}
+      />
+    </MainStack.Navigator>
+  )
+}
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   safeArea: {
     backgroundColor: Colors.darkest,
   },

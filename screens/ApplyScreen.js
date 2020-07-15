@@ -14,7 +14,7 @@ import {
   updateShopifyReducer,
 } from '../redux/reducers'
 
-export default function ApplyScreen() {
+export default function ApplyScreen({ navigation }) {
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
   const prepareApplyList = () => dispatch(prepareApplyListReducer())
@@ -38,6 +38,23 @@ export default function ApplyScreen() {
       prepareApplyList()
     }, [])
   )
+
+  if (state.serverError) {
+    navigation.navigate('ErrorScreen')
+    return null
+  } else if (!state.token) {
+    navigation.navigate('AuthScreen')
+    return null
+  } else if (!state.locationName) {
+    navigation.navigate('LocationScreen')
+    return null
+  } else if (!state.inventory) {
+    navigation.navigate('InventoryScreen')
+    return null
+  } else if (state.updateShopify) {
+    navigation.navigate('UpdateScreen')
+    return null
+  }
 
   return (
     <View style={styles.container}>

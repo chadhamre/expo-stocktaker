@@ -28,6 +28,7 @@ export default function AuthScreen(props) {
 
   const handleQRCodeScanned = async ({ type, data }) => {
     setScanned(true)
+    makeNoise(true)
     await loginToCycleServer(data)
   }
 
@@ -63,7 +64,6 @@ export default function AuthScreen(props) {
         if (response.message === 'Denied') {
           throw response
         } else {
-          makeNoise(true)
           saveAuth(response)
         }
       })

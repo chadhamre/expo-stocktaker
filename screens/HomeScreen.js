@@ -1,9 +1,12 @@
-import { ScrollView } from 'react-native-gesture-handler'
-import { useSelector, useDispatch } from 'react-redux'
 import * as React from 'react'
 import Colors from '../constants/Colors'
+
 import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
+import { ScrollView } from 'react-native-gesture-handler'
+import { sharedStyles } from '../constants/Styles'
+import { SpinnerScreen } from '../components/SpinnerScreen'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   clearLocationReducer,
   clearInventoryReducer,
@@ -28,10 +31,27 @@ export default function HomeScreen({ navigation }) {
   const clearScanned = () => dispatch(clearScannedReducer())
   const clearInventory = () => dispatch(clearInventoryReducer())
 
+  if (state.serverError) {
+    navigation.navigate('ErrorScreen')
+    return <SpinnerScreen />
+  } else if (!state.token) {
+    navigation.navigate('AuthScreen')
+    return <SpinnerScreen />
+  } else if (!state.locationName) {
+    navigation.navigate('LocationScreen')
+    return <SpinnerScreen />
+  } else if (!state.inventory) {
+    navigation.navigate('InventoryScreen')
+    return <SpinnerScreen />
+  } else if (state.updateShopify) {
+    navigation.navigate('UpdateScreen')
+    return <SpinnerScreen />
+  }
+
   return (
-    <View style={styles.container}>
+    <View style={sharedStyles.lightContainer}>
       <ScrollView
-        style={styles.container}
+        style={sharedStyles.lightContainer}
         contentContainerStyle={styles.contentContainer}
       >
         <View style={styles.welcomeContainer}>
@@ -135,10 +155,6 @@ HomeScreen.navigationOptions = {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   shopName: {
     fontSize: 18,
     fontWeight: 'bold',

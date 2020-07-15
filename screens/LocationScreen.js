@@ -18,7 +18,7 @@ import {
   View,
 } from 'react-native'
 
-export default function LocationScreen() {
+export default function LocationScreen({ navigation }) {
   // redux
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
