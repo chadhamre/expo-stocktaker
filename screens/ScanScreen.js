@@ -30,6 +30,7 @@ export default function ScanScreen({ navigation }) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
+      // findBarcode('0000001898')
     })()
   }, [])
 
