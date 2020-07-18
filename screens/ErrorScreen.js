@@ -31,7 +31,7 @@ export default function LocationScreen() {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Text style={styles.underline}>Server Error</Text>
+            <Text style={sharedStyles.underline}>Server Error</Text>
           </View>
           <View style={styles.helpContainer}>
             <Text>{state.serverError}</Text>
@@ -53,9 +53,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: '10%',
     paddingRight: '10%',
-  },
-  underline: {
-    textDecorationLine: 'underline',
   },
   contentContainer: {
     marginTop: -60,

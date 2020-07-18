@@ -1,14 +1,15 @@
+import Colors from '../constants/Colors'
+import Constants from 'expo-constants'
+import React, { useState, useEffect } from 'react'
+
 import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
-import { TitleText } from '../components/StyledText'
 import { reloadAsync } from 'expo-updates'
 import { ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
+import { TitleText } from '../components/StyledText'
 import { useSelector, useDispatch } from 'react-redux'
-import Colors from '../constants/Colors'
-import Constants from 'expo-constants'
-import React, { useState, useEffect } from 'react'
 import {
   updateShopifyReducer,
   clearScannedReducer,
@@ -55,7 +56,7 @@ export default function InventoryScreen() {
       <View style={sharedStyles.outerRoundedContainer}>
         <View style={sharedStyles.innerRoundedContainer}>
           <ScrollView
-            style={styles.container}
+            style={sharedStyles.container}
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.welcomeContainer}>
@@ -69,7 +70,7 @@ export default function InventoryScreen() {
                     />
                   </View>
                 ) : (
-                  <Text style={styles.underline}>Failure</Text>
+                  <Text style={sharedStyles.underline}>Failure</Text>
                 )}
               </View>
             </View>
@@ -255,12 +256,6 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: '10%',
     paddingRight: '10%',
-  },
-  underline: {
-    textDecorationLine: 'underline',
-  },
-  container: {
-    flex: 1,
   },
   contentContainer: {
     marginTop: -60,

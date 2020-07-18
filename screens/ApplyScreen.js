@@ -1,12 +1,14 @@
+import Colors from '../constants/Colors'
+import React, { useState } from 'react'
+
 import { ButtonGroup, CheckBox, Button } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
 import { MonoText } from '../components/StyledText'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
-import { MaterialIcons } from '@expo/vector-icons'
+import { sharedStyles } from '../constants/Styles'
 import { StyleSheet, Text, View, Link, Alert } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
-import Colors from '../constants/Colors'
-import React, { useState } from 'react'
 import {
   prepareApplyListReducer,
   saveButtonIndexReducer,
@@ -57,7 +59,7 @@ export default function ApplyScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={sharedStyles.lightContainer}>
       <View style={{ padding: 12, backgroundColor: 'white' }}>
         <CheckBox
           right
@@ -74,7 +76,7 @@ export default function ApplyScreen({ navigation }) {
         ></ButtonGroup>
       </View>
       <ScrollView
-        style={styles.container}
+        style={sharedStyles.lightContainer}
         contentContainerStyle={styles.contentContainer}
       >
         <NothingScanned />
@@ -243,10 +245,6 @@ const calculateAfter = (before, delta, overwrite) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fafafa',
-  },
   contentContainer: {
     paddingTop: 15,
   },

@@ -1,14 +1,15 @@
+import Colors from '../constants/Colors'
+import Constants from 'expo-constants'
+import React, { useState, useEffect } from 'react'
+
 import { Button } from 'react-native-elements'
-import { TitleText } from '../components/StyledText'
 import { reloadAsync } from 'expo-updates'
 import { saveLocationReducer, saveServerErrorReducer } from '../redux/reducers'
 import { ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
+import { TitleText } from '../components/StyledText'
 import { useSelector, useDispatch } from 'react-redux'
-import Colors from '../constants/Colors'
-import Constants from 'expo-constants'
-import React, { useState, useEffect } from 'react'
 import {
   Image,
   Platform,
@@ -63,9 +64,9 @@ export default function LocationScreen({ navigation }) {
     return (
       <View style={sharedStyles.outerRoundedContainer}>
         <View style={sharedStyles.innerRoundedContainer}>
-          <View style={styles.container}>
+          <View style={sharedStyles.container}>
             <ScrollView
-              style={styles.container}
+              style={sharedStyles.container}
               contentContainerStyle={styles.contentContainer}
             >
               <View style={styles.helpContainer}>
@@ -83,9 +84,6 @@ export default function LocationScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   contentContainer: {
     marginTop: -60,
     flexGrow: 1,

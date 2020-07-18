@@ -1,14 +1,15 @@
+import Colors from '../constants/Colors'
+import Constants from 'expo-constants'
+import React, { useState, useEffect } from 'react'
+
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
+import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import Colors from '../constants/Colors'
-import Constants from 'expo-constants'
-import React, { useState, useEffect } from 'react'
-import { sharedStyles } from '../constants/Styles'
 
 export default function AuthScreen(props) {
   const state = useSelector((state) => state)
@@ -22,7 +23,9 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // loginToCycleServer('dcf1bd57-fd9e-498a-88ed-71206a55329a')
+      // loginToCycleServer('17b7fe5f-bc18-44c0-a0a8-d4e623a16687')
+      // loginToCycleServer('83f4cc1a-6d6e-4454-8fad-b95ae81e41db')
+      // loginToCycleServer('339590e7-b179-425e-b7fb-5b109dd5d30e')
     })()
   }, [])
 
@@ -111,10 +114,6 @@ export default function AuthScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fafafa',
-  },
   top: {
     flex: 1.4,
     justifyContent: 'flex-end',

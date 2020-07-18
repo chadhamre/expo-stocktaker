@@ -1,7 +1,8 @@
+import reducer from './reducers'
+
 import { AsyncStorage } from 'react-native'
 import { createStore } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
-import reducer from './reducers'
 
 const persistConfig = {
   key: 'root',
@@ -16,7 +17,7 @@ const store = createStore(
 )
 
 const persistor = persistStore(store)
-// persistor.purge()
+persistor.purge()
 
 const getPersistor = () => persistor
 const getStore = () => store

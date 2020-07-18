@@ -1,14 +1,16 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import * as React from 'react'
-
-import TabBarIcon from '../components/TabBarIcon'
-import TabBarIconWithBadge from '../components/TabBarIconWithBadge'
+import ApplyScreen from '../screens/ApplyScreen'
+import Colors from '../constants/Colors'
 import HomeScreen from '../screens/HomeScreen'
 import ScanScreen from '../screens/ScanScreen'
-import ApplyScreen from '../screens/ApplyScreen'
+import TabBarIcon from '../components/TabBarIcon'
+import TabBarIconWithBadge from '../components/TabBarIconWithBadge'
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { sharedStyles } from '../constants/Styles'
+
 const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
-import Colors from '../constants/Colors'
 
 export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({
@@ -73,4 +75,7 @@ const tabBarOptions = {
   adaptive: true,
   activeBackgroundColor: Colors.darkest,
   inactiveBackgroundColor: Colors.darkest,
+  style: {
+    backgroundColor: Colors.darkest,
+  },
 }

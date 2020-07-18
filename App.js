@@ -17,18 +17,11 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { getStore, getPersistor } from './redux/store'
 import { NavigationContainer, useFocusEffect } from '@react-navigation/native'
 import { PersistGate } from 'redux-persist/integration/react'
+import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
 import { Provider as StoreProvider } from 'react-redux'
 import { sharedStyles } from './constants/Styles'
 import { SpinnerScreen } from './components/SpinnerScreen'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  Image,
-  SafeAreaView,
-} from 'react-native'
 
 const MainStack = createStackNavigator()
 const RootStack = createStackNavigator()
@@ -44,10 +37,7 @@ const App = () => {
     return (
       <StoreProvider store={myStore}>
         <PersistGate persistor={myPersistor} loading={<SpinnerScreen />}>
-          <SafeAreaView style={styles.safeArea}></SafeAreaView>
-          <StatusBar barStyle="light-content" />
           <AppNavigator />
-          <SafeAreaView style={styles.safeArea}></SafeAreaView>
         </PersistGate>
       </StoreProvider>
     )
@@ -58,11 +48,9 @@ const AppNavigator = () => {
   const state = useSelector((state) => state)
 
   return (
-    <View style={sharedStyles.lightContainer}>
-      <NavigationContainer linking={LinkingConfiguration}>
-        <RootStackScreen />
-      </NavigationContainer>
-    </View>
+    <NavigationContainer linking={LinkingConfiguration}>
+      <RootStackScreen />
+    </NavigationContainer>
   )
 }
 
@@ -99,11 +87,5 @@ const MainStackScreen = () => {
     </MainStack.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: Colors.darkest,
-  },
-})
 
 export default App

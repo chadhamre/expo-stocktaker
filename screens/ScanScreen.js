@@ -1,3 +1,6 @@
+import Colors from '../constants/Colors'
+import React, { useState, useEffect } from 'react'
+
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { MonoText } from '../components/StyledText'
@@ -6,8 +9,6 @@ import { Spinner } from '../components/Spinner'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
-import Colors from '../constants/Colors'
-import React, { useState, useEffect } from 'react'
 
 const blankLatest = {
   title: null,
@@ -30,7 +31,7 @@ export default function ScanScreen({ navigation }) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // findBarcode('0000001898')
+      // findBarcode('BBBBB')
     })()
   }, [])
 

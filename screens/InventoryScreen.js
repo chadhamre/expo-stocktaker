@@ -1,12 +1,13 @@
-import Constants from 'expo-constants'
-import { saveInventoryReducer } from '../redux/reducers'
-import { MonoText } from '../components/StyledText'
-import { SpinnerScreen } from '../components/SpinnerScreen'
-import { reloadAsync } from 'expo-updates'
-import { ScrollView } from 'react-native-gesture-handler'
-import { useSelector, useDispatch } from 'react-redux'
 import React, { useState, useEffect } from 'react'
-import * as WebBrowser from 'expo-web-browser'
+import Constants from 'expo-constants'
+
+import { MonoText } from '../components/StyledText'
+import { reloadAsync } from 'expo-updates'
+import { saveInventoryReducer } from '../redux/reducers'
+import { ScrollView } from 'react-native-gesture-handler'
+import { sharedStyles } from '../constants/Styles'
+import { SpinnerScreen } from '../components/SpinnerScreen'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Image,
   Platform,
