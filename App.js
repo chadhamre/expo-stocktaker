@@ -48,9 +48,11 @@ const AppNavigator = () => {
   const state = useSelector((state) => state)
 
   return (
-    <NavigationContainer linking={LinkingConfiguration}>
-      <RootStackScreen />
-    </NavigationContainer>
+    <View style={sharedStyles.tintContainer}>
+      <NavigationContainer linking={LinkingConfiguration} >
+        <RootStackScreen />
+      </NavigationContainer>
+    </View>
   )
 }
 
