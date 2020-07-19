@@ -32,11 +32,11 @@ const App = () => {
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
-    return <SpinnerScreen />
+    return null
   } else {
     return (
       <StoreProvider store={myStore}>
-        <PersistGate persistor={myPersistor} loading={<SpinnerScreen />}>
+        <PersistGate persistor={myPersistor} loading={null}>
           <AppNavigator />
         </PersistGate>
       </StoreProvider>
@@ -49,7 +49,7 @@ const AppNavigator = () => {
 
   return (
     <View style={sharedStyles.tintContainer}>
-      <NavigationContainer linking={LinkingConfiguration} >
+      <NavigationContainer linking={LinkingConfiguration}>
         <RootStackScreen />
       </NavigationContainer>
     </View>
