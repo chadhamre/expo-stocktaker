@@ -1,3 +1,4 @@
+import * as Linking from 'expo-linking'
 import Colors from '../constants/Colors'
 import Constants from 'expo-constants'
 import React, { useState, useEffect } from 'react'
@@ -8,8 +9,15 @@ import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
-import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import {
+  Text,
+  View,
+  StyleSheet,
+  Vibration,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 
 export default function AuthScreen(props) {
   const state = useSelector((state) => state)
@@ -23,7 +31,7 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // loginToCycleServer('1e7aad91-c741-4bf2-bab0-e7c4d2e3da2e')
+      // loginToCycleServer('76ad8b22-c0ca-4f2d-8596-b685164f1f6e')
     })()
   }, [])
 
@@ -105,6 +113,17 @@ export default function AuthScreen(props) {
             source={require('../assets/images/qrcode.png')}
             style={styles.qrImage}
           />
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(
+                'mailto:hello@saskatoonlabs.com?subject=StockTakerApp'
+              )
+            }}
+          >
+            <Text style={styles.centerText}>
+              Need help? Email hello@saskatoonlabs.com.
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
