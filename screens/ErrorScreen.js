@@ -48,6 +48,9 @@ export default function LocationScreen() {
 }
 
 const styles = StyleSheet.create({
+  welcomeContainer: {
+    alignItems: 'center',
+  },
   buttonContainer: {
     paddingTop: 30,
     paddingBottom: 15,
