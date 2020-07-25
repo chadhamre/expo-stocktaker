@@ -1,7 +1,8 @@
-import { Ionicons } from '@expo/vector-icons'
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
 import * as React from 'react'
 import Colors from '../constants/Colors'
+
+import { Ionicons } from '@expo/vector-icons'
+import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
 
 export function Spinner(props) {
   return (

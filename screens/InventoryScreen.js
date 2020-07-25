@@ -85,6 +85,7 @@ export default function InventoryScreen({ navigation }) {
     <SpinnerScreen
       labelTop={`Getting latest data from Shopify.`}
       labelBottom={attempts ? `${attempts} sec.` : '...'}
+      attempts={attempts}
     />
   )
 }

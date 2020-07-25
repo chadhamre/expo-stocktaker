@@ -6,6 +6,9 @@ const sharedStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  centerText: {
+    textAlign: 'center',
+  },
   lightContainer: {
     flex: 1,
     backgroundColor: Colors.lightest,
@@ -34,6 +37,9 @@ const sharedStyles = StyleSheet.create({
     borderRadius: 39,
     marginTop: 70,
     marginBottom: 70,
+  },
+  paddingTop: {
+    paddingTop: 10,
   },
   underline: {
     textDecorationLine: 'underline',
