@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react'
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { MonoText } from '../components/StyledText'
+import { PermissionsScreen } from '../components/PermissionsScreen'
 import { saveGoodScanReducer, saveBadScanReducer } from '../redux/reducers'
-import { Spinner } from '../components/Spinner'
+import { SpinnerScreen } from '../components/SpinnerScreen'
 import { Text, View, StyleSheet, Button, Vibration, Image } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
@@ -93,12 +94,11 @@ export default function ScanScreen({ navigation }) {
   }
 
   // Render
-
   if (hasPermission === null) {
-    return <Spinner />
+    return <SpinnerScreen />
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>
+    return <PermissionsScreen />
   }
 
   if (state.serverError) {

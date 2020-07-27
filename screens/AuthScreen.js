@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import { PermissionsScreen } from '../components/PermissionsScreen'
 import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
 import { sharedStyles } from '../constants/Styles'
@@ -31,7 +32,7 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // loginToCycleServer('a784df2e-7e92-4b08-b3d4-7d14e872257b')
+      // loginToCycleServer('02502ca3-1274-446d-b5bf-4d6e272bac65')
     })()
   }, [])
 
@@ -89,7 +90,7 @@ export default function AuthScreen(props) {
     return <SpinnerScreen />
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>
+    return <PermissionsScreen />
   }
 
   return (
