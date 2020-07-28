@@ -150,42 +150,72 @@ export default function ApplyScreen({ navigation }) {
   }
 
   function CountItem({ isLastOption, item, delta, overwrite, sibling }) {
+    const [adjust, setAdjust] = useState(false)
+
     const before = item && item.available
     const after = calculateAfter(before, delta, overwrite)
 
     return (
-      <RectButton style={[styles.option, isLastOption && styles.lastOption]}>
+      <RectButton
+        onPress={() => {
+          setAdjust(!adjust)
+        }}
+        style={[styles.option, isLastOption && styles.lastOption]}
+      >
         <View style={[{ flexDirection: 'row' }, styles.goodBorder]}>
           <View style={styles.optionTextContainer}>
-            <View style={styles.barcode}>
-              {display === 1 ? (
-                <Text style={[styles.optionLabel, styles.title]}>
-                  {item[displayMap[display]]}
-                </Text>
-              ) : (
-                <MonoText style={[styles.optionLabel]}>
-                  {item[displayMap[display]]}
-                </MonoText>
-              )}
-            </View>
-            {delta !== 0 && !sibling ? (
-              <View style={styles.barcodeCount}>
-                <Text style={styles.optionCountDelta}>
-                  {delta > 0 ? '+' : ''}
-                  {delta}
-                </Text>
-              </View>
+            {adjust ? (
+              <Adjuster item={item} />
             ) : (
-              <View style={styles.barcodeCount}>
-                <Text style={styles.optionCountDelta}></Text>
+              <View style={styles.barcode}>
+                {display === 1 ? (
+                  <Text style={[styles.optionLabel, styles.title]}>
+                    {item[displayMap[display]]}
+                  </Text>
+                ) : (
+                  <MonoText style={[styles.optionLabel]}>
+                    {item[displayMap[display]]}
+                  </MonoText>
+                )}
               </View>
             )}
-            <View style={styles.barcodeCount}>
-              <Text style={styles.optionCount}>{after}</Text>
-            </View>
+            <>
+              {delta !== 0 && !sibling ? (
+                <View style={styles.barcodeCount}>
+                  <Text style={styles.optionCountDelta}>
+                    {delta > 0 ? '+' : ''}
+                    {delta}
+                  </Text>
+                </View>
+              ) : (
+                <View style={styles.barcodeCount}>
+                  <Text style={styles.optionCountDelta}></Text>
+                </View>
+              )}
+              <View style={styles.barcodeCount}>
+                <Text style={styles.optionCount}>{after}</Text>
+              </View>
+            </>
           </View>
         </View>
       </RectButton>
+    )
+  }
+
+  function Adjuster(item) {
+    console.log(item)
+    return (
+      <View style={styles.adjust}>
+        <Button
+          onPress={() => {
+            console.log('inner press')
+          }}
+          buttonStyle={styles.smallButton}
+          title={'save'}
+        />
+        <Button buttonStyle={styles.smallButton} title={'-'} />
+        <Button buttonStyle={styles.smallButton} title={'+'} />
+      </View>
     )
   }
 
@@ -245,6 +275,13 @@ const calculateAfter = (before, delta, overwrite) => {
 }
 
 const styles = StyleSheet.create({
+  smallButton: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    marginRight: 5,
+    minWidth: 40,
+  },
+  adjust: { flex: 26, flexDirection: 'row', height: 30 },
   contentContainer: {
     paddingTop: 15,
   },
