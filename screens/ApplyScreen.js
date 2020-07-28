@@ -2,7 +2,7 @@ import Colors from '../constants/Colors'
 import React, { useState } from 'react'
 
 import { ButtonGroup, CheckBox, Button } from 'react-native-elements'
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, AntDesign } from '@expo/vector-icons'
 import { MonoText } from '../components/StyledText'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
@@ -14,6 +14,7 @@ import {
   saveButtonIndexReducer,
   toggleIncludeSiblingsReducer,
   updateShopifyReducer,
+  updateDeltaReducer,
 } from '../redux/reducers'
 
 export default function ApplyScreen({ navigation }) {
@@ -23,6 +24,9 @@ export default function ApplyScreen({ navigation }) {
   const saveButtonIndex = (index) => dispatch(saveButtonIndexReducer(index))
   const toggleIncludeSiblings = () => dispatch(toggleIncludeSiblingsReducer())
   const updateShopify = (status) => dispatch(updateShopifyReducer(status))
+  const updateDelta = (barcode, delta) => {
+    dispatch(updateDeltaReducer(barcode, delta))
+  }
 
   const [buttonIndex, setButtonIndex] = useState(0)
   const [display, setDisplay] = useState(0)
@@ -151,9 +155,40 @@ export default function ApplyScreen({ navigation }) {
 
   function CountItem({ isLastOption, item, delta, overwrite, sibling }) {
     const [adjust, setAdjust] = useState(false)
+    const [adjustDelta, setAdjustDelta] = useState(0)
 
     const before = item && item.available
-    const after = calculateAfter(before, delta, overwrite)
+    let newDelta = delta + adjustDelta
+
+    const after = calculateAfter(before, delta, adjustDelta, overwrite)
+
+    const Identifier = () => {
+      return (
+        <View style={styles.barcode}>
+          {display === 1 ? (
+            <Text style={[styles.optionLabel, styles.title]}>
+              {item[displayMap[display]]}
+            </Text>
+          ) : (
+            <MonoText style={[styles.optionLabel]}>
+              {item[displayMap[display]]}
+            </MonoText>
+          )}
+        </View>
+      )
+    }
+
+    if (adjust)
+      return (
+        <View style={[styles.option, isLastOption && styles.lastOption]}>
+          <View style={[{ flexDirection: 'row' }, styles.goodBorder]}>
+            <View style={styles.optionTextContainer}>
+              <Adjuster item={item} />
+              <CountPreview />
+            </View>
+          </View>
+        </View>
+      )
 
     return (
       <RectButton
@@ -164,59 +199,77 @@ export default function ApplyScreen({ navigation }) {
       >
         <View style={[{ flexDirection: 'row' }, styles.goodBorder]}>
           <View style={styles.optionTextContainer}>
-            {adjust ? (
-              <Adjuster item={item} />
-            ) : (
-              <View style={styles.barcode}>
-                {display === 1 ? (
-                  <Text style={[styles.optionLabel, styles.title]}>
-                    {item[displayMap[display]]}
-                  </Text>
-                ) : (
-                  <MonoText style={[styles.optionLabel]}>
-                    {item[displayMap[display]]}
-                  </MonoText>
-                )}
-              </View>
-            )}
-            <>
-              {delta !== 0 && !sibling ? (
-                <View style={styles.barcodeCount}>
-                  <Text style={styles.optionCountDelta}>
-                    {delta > 0 ? '+' : ''}
-                    {delta}
-                  </Text>
-                </View>
-              ) : (
-                <View style={styles.barcodeCount}>
-                  <Text style={styles.optionCountDelta}></Text>
-                </View>
-              )}
-              <View style={styles.barcodeCount}>
-                <Text style={styles.optionCount}>{after}</Text>
-              </View>
-            </>
+            <Identifier />
+            <CountPreview />
           </View>
         </View>
       </RectButton>
     )
-  }
 
-  function Adjuster(item) {
-    console.log(item)
-    return (
-      <View style={styles.adjust}>
-        <Button
-          onPress={() => {
-            console.log('inner press')
-          }}
-          buttonStyle={styles.smallButton}
-          title={'save'}
-        />
-        <Button buttonStyle={styles.smallButton} title={'-'} />
-        <Button buttonStyle={styles.smallButton} title={'+'} />
-      </View>
-    )
+    function CountPreview() {
+      return (
+        <>
+          {newDelta !== 0 && !sibling ? (
+            <View style={styles.barcodeCount}>
+              <Text style={styles.optionCountDelta}>
+                {newDelta > 0 ? '+' : ''}
+                {newDelta}
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.barcodeCount}>
+              <Text style={styles.optionCountDelta}></Text>
+            </View>
+          )}
+          <View style={styles.barcodeCount}>
+            <Text style={styles.optionCount}>{after}</Text>
+          </View>
+        </>
+      )
+    }
+
+    function Adjuster(item) {
+      console.log('ITEM', item.item.barcode)
+      return (
+        <View style={styles.adjust}>
+          <Button
+            onPress={() => {
+              setAdjust(!adjust)
+              setAdjustDelta(0)
+            }}
+            buttonStyle={[styles.smallButton, { backgroundColor: 'red' }]}
+            title={<AntDesign name="minuscircleo" size={14} />}
+          />
+          <Button
+            onPress={() => {
+              updateDelta(item.item.barcode, adjustDelta)
+              setAdjustDelta(0)
+              prepareApplyList()
+              setAdjust(!adjust)
+            }}
+            buttonStyle={[
+              styles.smallButton,
+              { backgroundColor: Colors.lightGreen },
+            ]}
+            title={<AntDesign name="save" size={16} />}
+          />
+          <Button
+            onPress={() => {
+              setAdjustDelta(adjustDelta - 1 >= 0 ? adjustDelta - 1 : 0)
+            }}
+            buttonStyle={styles.smallButton}
+            title={<AntDesign name="minus" size={16} />}
+          />
+          <Button
+            onPress={() => {
+              setAdjustDelta(adjustDelta + 1)
+            }}
+            buttonStyle={styles.smallButton}
+            title={<AntDesign name="plus" size={16} />}
+          />
+        </View>
+      )
+    }
   }
 
   function CountHead({ label, count }) {
@@ -269,9 +322,9 @@ export default function ApplyScreen({ navigation }) {
   }
 }
 
-const calculateAfter = (before, delta, overwrite) => {
-  if (delta && delta !== 0) return before + delta
-  return overwrite
+const calculateAfter = (before, delta, adjustDelta, overwrite) => {
+  if (delta && delta !== 0) return before + delta + adjustDelta
+  return overwrite + adjustDelta
 }
 
 const styles = StyleSheet.create({
@@ -279,9 +332,10 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
     marginRight: 5,
-    minWidth: 40,
+    minWidth: 46,
+    height: 23,
   },
-  adjust: { flex: 26, flexDirection: 'row', height: 30 },
+  adjust: { flex: 26, flexDirection: 'row' },
   contentContainer: {
     paddingTop: 15,
   },

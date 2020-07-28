@@ -15,6 +15,7 @@ export const CLEAR_SCANNED = 'CLEAR_SCANNED'
 export const CLEAR_LOCATION = 'CLEAR_LOCATION'
 export const CLEAR_SERVER_ERROR = 'CLEAR_SERVER_ERROR'
 export const UPDATE_SHOPIFY = 'UPDATE_SHOPIFY'
+export const UPDATE_DELTA = 'UPDATE_DELTA'
 export const LOGOUT = 'LOGOUT'
 
 // Action Creators
@@ -120,6 +121,14 @@ export const updateShopifyReducer = (status) => {
   return {
     type: UPDATE_SHOPIFY,
     status,
+  }
+}
+
+export const updateDeltaReducer = (barcode, delta) => {
+  return {
+    type: UPDATE_DELTA,
+    barcode,
+    delta,
   }
 }
 
@@ -294,6 +303,18 @@ export default (state = initialState, action) => {
         ...state,
         includeSiblings: !state.includeSiblings,
       }
+
+    case UPDATE_DELTA:
+      console.log(action)
+      const newGoodStateUpdated = {
+        ...state,
+        scannedGood: { ...state.scannedGood },
+      }
+
+      newGoodStateUpdated.scannedGood[action.barcode] = action.delta
+      console.log(newGoodStateUpdated.scannedGood[action.barcode])
+
+      return newGoodStateUpdated
 
     case SAVE_BUTTON_INDEX:
       return {
