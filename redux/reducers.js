@@ -305,14 +305,16 @@ export default (state = initialState, action) => {
       }
 
     case UPDATE_DELTA:
-      console.log(action)
+      console.log('---------')
+      console.log('ACTION', action)
       const newGoodStateUpdated = {
         ...state,
         scannedGood: { ...state.scannedGood },
       }
 
+      console.log('BEFORE', newGoodStateUpdated.scannedGood[action.barcode])
       newGoodStateUpdated.scannedGood[action.barcode] = action.delta
-      console.log(newGoodStateUpdated.scannedGood[action.barcode])
+      console.log('AFTER', newGoodStateUpdated.scannedGood[action.barcode])
 
       return newGoodStateUpdated
 
