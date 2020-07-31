@@ -51,7 +51,7 @@ export default function ScanScreen({ navigation }) {
     setScanned(true)
     findBarcode(data)
 
-    await unlockScanner(3000)
+    await unlockScanner(2000)
   }
 
   const makeNoise = async (good) => {
