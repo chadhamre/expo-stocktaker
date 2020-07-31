@@ -32,7 +32,7 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      loginToCycleServer('c0955909-61bb-4ba6-a188-39417c87ebb2')
+      // loginToCycleServer('c0955909-61bb-4ba6-a188-39417c87ebb2')
     })()
   }, [])
 
