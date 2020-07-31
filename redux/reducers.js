@@ -313,7 +313,7 @@ export default (state = initialState, action) => {
       }
 
       console.log('BEFORE', newGoodStateUpdated.scannedGood[action.barcode])
-      newGoodStateUpdated.scannedGood[action.barcode] = action.delta
+      newGoodStateUpdated.scannedGood[action.barcode] = Math.abs(action.delta)
       console.log('AFTER', newGoodStateUpdated.scannedGood[action.barcode])
 
       return newGoodStateUpdated

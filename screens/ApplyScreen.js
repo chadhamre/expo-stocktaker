@@ -154,7 +154,13 @@ export default function ApplyScreen({ navigation }) {
       const before = item && item.available
       let newDelta = delta + adjustDelta
 
-      const after = calculateAfter(before, delta, adjustDelta, overwrite)
+      const after = calculateAfter(
+        before,
+        delta,
+        newDelta,
+        overwrite,
+        buttonIndex
+      )
 
       const Identifier = () => {
         return (
@@ -223,34 +229,50 @@ export default function ApplyScreen({ navigation }) {
       )
 
       function CountPreview() {
+        console.log('sibling', sibling)
+        console.log('before', before)
+        console.log('after', after)
+        console.log('delta', delta)
+        console.log('newDelta', newDelta)
+        console.log('overwrite', overwrite)
+        const formattedDelta = `${delta > 0 ? '+' : ''} ${delta}`
+        const formattedNewDelta = `${newDelta > 0 ? '+' : ''} ${newDelta}`
+
+        const displayDelta =
+          formattedNewDelta !== 0 ? formattedNewDelta : formattedDelta
+
         return (
           <>
-            <View style={styles.barcodeCount}>
-              <Text style={styles.optionCount}>{before}</Text>
-            </View>
+            {buttonIndex === 2 || sibling ? null : (
+              <View style={styles.barcodeCount}>
+                <Text style={styles.optionCount}>{before}</Text>
+              </View>
+            )}
+
+            {buttonIndex === 2 || sibling ? null : (
+              <View style={styles.barcodeCount}>
+                <Text style={styles.optionCountDelta}>{displayDelta}</Text>
+              </View>
+            )}
 
             <View style={styles.barcodeCount}>
-              <Text style={styles.optionCountDelta}>
-                {after - before > 0 ? '+' : ''}
-                {after - before}
-              </Text>
-            </View>
-
-            <View style={styles.barcodeCount}>
-              <Text style={styles.optionCount}>{after}</Text>
+              {buttonIndex === 2 || sibling ? (
+                <Text style={styles.optionCountDelta}>{after}</Text>
+              ) : (
+                <Text style={styles.optionCount}>{after}</Text>
+              )}
             </View>
           </>
         )
       }
 
       function Adjuster(item) {
-        console.log('BUTTON INDEX', buttonIndex)
         return (
           <View style={styles.adjustHolder}>
             <View style={styles.adjust}>
               <Button
                 onPress={() => {
-                  updateDelta(item.item.barcode, newDelta)
+                  updateDelta(item.item.barcode, newDelta + overwrite)
                   setAdjustDelta(0)
                   prepareApplyList()
                   setAdjust(!adjust)
@@ -265,7 +287,7 @@ export default function ApplyScreen({ navigation }) {
             <View style={styles.adjustRight}>
               <Button
                 onPress={() => {
-                  console.log('NUMS', newDelta, delta, adjustDelta)
+                  console.log('minus', newDelta, delta, adjustDelta)
                   switch (buttonIndex) {
                     case 0:
                       setAdjustDelta(
@@ -277,6 +299,10 @@ export default function ApplyScreen({ navigation }) {
                         newDelta + 1 <= 0 ? adjustDelta + 1 : adjustDelta
                       )
                       break
+                    case 2:
+                      setAdjustDelta(
+                        newDelta - 1 >= 0 ? adjustDelta - 1 : adjustDelta
+                      )
                   }
                 }}
                 buttonStyle={styles.smallButton}
@@ -286,7 +312,7 @@ export default function ApplyScreen({ navigation }) {
               />
               <Button
                 onPress={() => {
-                  console.log('NUMS', newDelta, delta, adjustDelta)
+                  console.log('plus', newDelta, delta, adjustDelta)
                   switch (buttonIndex) {
                     case 0:
                       setAdjustDelta(adjustDelta + 1)
@@ -340,7 +366,7 @@ export default function ApplyScreen({ navigation }) {
                   { textDecorationLine: 'underline' },
                 ]}
               >
-                Before
+                {buttonIndex === 2 ? null : 'Before'}
               </Text>
               <Text
                 style={[
@@ -374,9 +400,17 @@ export default function ApplyScreen({ navigation }) {
   }
 }
 
-const calculateAfter = (before, delta, adjustDelta, overwrite) => {
-  if (delta && delta !== 0) return before + delta + adjustDelta
-  return overwrite + adjustDelta
+const calculateAfter = (before, delta, adjustDelta, overwrite, buttonIndex) => {
+  console.log(before, delta, adjustDelta, overwrite, buttonIndex)
+  if (adjustDelta) {
+    if (buttonIndex === 2) {
+      return overwrite + adjustDelta
+    }
+    return before + adjustDelta
+  }
+
+  if (overwrite) return overwrite
+  return before + delta
 }
 
 const styles = StyleSheet.create({
