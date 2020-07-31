@@ -143,7 +143,7 @@ export default function ApplyScreen({ navigation }) {
           item={state.inventory[barcode]}
           delta={item.delta}
           overwrite={item.overwrite}
-          sibling={!!!state.scannedGood[barcode]}
+          sibling={!state.scannedGood.hasOwnProperty(barcode)}
         />
       )
     })
@@ -159,7 +159,8 @@ export default function ApplyScreen({ navigation }) {
         delta,
         newDelta,
         overwrite,
-        buttonIndex
+        buttonIndex,
+        sibling
       )
 
       const Identifier = () => {
@@ -400,16 +401,19 @@ export default function ApplyScreen({ navigation }) {
   }
 }
 
-const calculateAfter = (before, delta, adjustDelta, overwrite, buttonIndex) => {
-  if (adjustDelta) {
-    if (buttonIndex === 2) {
-      return overwrite + adjustDelta
-    }
-    return before + adjustDelta
+const calculateAfter = (
+  before,
+  delta,
+  adjustDelta,
+  overwrite,
+  buttonIndex,
+  sibling
+) => {
+  if (buttonIndex === 2) {
+    return overwrite + adjustDelta
   }
-
-  if (adjustDelta && adjustDelta !== 0) return before + adjustDelta
-  return overwrite
+  if (sibling && adjustDelta === 0) return overwrite
+  return before + adjustDelta
 }
 
 const styles = StyleSheet.create({
