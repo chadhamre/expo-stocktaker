@@ -7,7 +7,6 @@ export const ADD_GOOD_SCAN = 'ADD_GOOD_SCAN'
 export const ADD_BAD_SCAN = 'ADD_BAD_SCAN'
 export const ADD_SIBLINGS = 'ADD_SIBLINGS'
 export const PREPARE_APPLY_LIST = 'PREPARE_APPLY_LIST'
-export const REMOVE_GOOD_SCAN = 'REMOVE_GOOD_SCAN'
 export const INCLUDE_SIBLINGS = 'INCLUDE_SIBLINGS'
 export const SAVE_BUTTON_INDEX = 'SAVE_BUTTON_INDEX'
 export const CLEAR_SIBLINGS = 'CLEAR_SIBLINGS'
@@ -79,13 +78,6 @@ export const saveButtonIndexReducer = (buttonIndex) => {
 export const prepareApplyListReducer = () => {
   return {
     type: PREPARE_APPLY_LIST,
-  }
-}
-
-export const removeGoodScanReducer = (barcode) => {
-  return {
-    type: REMOVE_GOOD_SCAN,
-    barcode,
   }
 }
 
@@ -259,15 +251,6 @@ export default (state = initialState, action) => {
       } else newBadState.scannedBad[action.barcode] = 1
 
       return newBadState
-
-    case REMOVE_GOOD_SCAN:
-      const newRemovedState = { ...state }
-      console.log(newRemovedState.scannedGood)
-      console.log(newRemovedState.scannedGoodTotal)
-
-      delete newRemovedState.scannedGood[action.barcode]
-      newRemovedState.scannedGoodTotal = newRemovedState.scannedGoodTotal - 1
-      return newRemovedState
 
     case PREPARE_APPLY_LIST:
       const barcodes = Object.keys(state.scannedGood)

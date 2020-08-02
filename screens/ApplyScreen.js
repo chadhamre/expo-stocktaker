@@ -1,27 +1,18 @@
 import Colors from '../constants/Colors'
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 
 import { ButtonGroup, CheckBox, Button } from 'react-native-elements'
 import { MaterialIcons, AntDesign } from '@expo/vector-icons'
 import { MonoText } from '../components/StyledText'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
-import {
-  StyleSheet,
-  Text,
-  View,
-  Link,
-  Alert,
-  TouchableOpacity,
-} from 'react-native'
-import { SwipeRow } from 'react-native-swipe-list-view'
+import { StyleSheet, Text, View, Link, Alert } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   prepareApplyListReducer,
   saveButtonIndexReducer,
   toggleIncludeSiblingsReducer,
-  removeGoodScanReducer,
   updateShopifyReducer,
   updateDeltaReducer,
 } from '../redux/reducers'
@@ -32,7 +23,6 @@ export default function ApplyScreen({ navigation }) {
   const prepareApplyList = () => dispatch(prepareApplyListReducer())
   const saveButtonIndex = (index) => dispatch(saveButtonIndexReducer(index))
   const toggleIncludeSiblings = () => dispatch(toggleIncludeSiblingsReducer())
-  const removeGoodScan = (barcode) => dispatch(removeGoodScanReducer(barcode))
   const updateShopify = (status) => dispatch(updateShopifyReducer(status))
   const updateDelta = (barcode, delta) => {
     dispatch(updateDeltaReducer(barcode, delta))
@@ -145,50 +135,16 @@ export default function ApplyScreen({ navigation }) {
 
   function BarcodeListGoodInner() {
     const [adjust, setAdjust] = useState(null)
-    const [swiped, setSwiped] = useState(false)
-    const rowRef = useRef(null)
-
     return state.applyList.map((item) => {
       const barcode = item.barcode
       return (
-        <SwipeRow
-          disableRightSwipe={true}
-          rightOpenValue={-150}
-          ref={rowRef}
+        <CountItem
           key={barcode}
-        >
-          <View style={styles.rowBack} key={barcode}>
-            <Text></Text>
-            <TouchableOpacity
-              style={[styles.backRightBtn, styles.backRightBtnLeft]}
-              onPress={() => {
-                rowRef.current.closeRow()
-                setAdjust(item.barcode)
-              }}
-            >
-              <Text style={styles.backTextWhite}>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.backRightBtn, styles.backRightBtnRight]}
-              onPress={() => {
-                removeGoodScan(barcode)
-                prepareApplyList()
-              }}
-            >
-              <Text style={styles.backTextWhite}>Remove</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.standaloneRowFront}>
-            <CountItem
-              key={barcode}
-              item={state.inventory[barcode]}
-              delta={item.delta}
-              overwrite={item.overwrite}
-              sibling={!state.scannedGood.hasOwnProperty(barcode)}
-              swiped={swiped}
-            />
-          </View>
-        </SwipeRow>
+          item={state.inventory[barcode]}
+          delta={item.delta}
+          overwrite={item.overwrite}
+          sibling={!state.scannedGood.hasOwnProperty(barcode)}
+        />
       )
     })
 
@@ -257,14 +213,19 @@ export default function ApplyScreen({ navigation }) {
 
       return (
         <>
-          <View style={[styles.option, isLastOption && styles.lastOption]}>
+          <RectButton
+            onPress={() => {
+              setAdjust(item.barcode)
+            }}
+            style={[styles.option, isLastOption && styles.lastOption]}
+          >
             <View style={[{ flexDirection: 'row' }, styles.goodBorder]}>
               <View style={styles.optionTextContainer}>
                 <Identifier />
                 <CountPreview />
               </View>
             </View>
-          </View>
+          </RectButton>
         </>
       )
 
@@ -562,40 +523,5 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-  },
-  backTextWhite: {
-    color: '#FFF',
-  },
-  rowFront: {
-    alignItems: 'center',
-    backgroundColor: '#CCC',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-    height: 50,
-  },
-  rowBack: {
-    alignItems: 'center',
-    backgroundColor: '#DDD',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 15,
-  },
-  backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
-    width: 75,
-  },
-  backRightBtnLeft: {
-    backgroundColor: Colors.tintColor,
-    right: 75,
-  },
-  backRightBtnRight: {
-    backgroundColor: 'red',
-    right: 0,
   },
 })
