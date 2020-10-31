@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import Colors from '../constants/Colors'
 
 import { Button } from 'react-native-elements'
@@ -31,20 +31,27 @@ export default function HomeScreen({ navigation }) {
   const clearScanned = () => dispatch(clearScannedReducer())
   const clearInventory = () => dispatch(clearInventoryReducer())
 
-  if (state.serverError) {
-    navigation.navigate('ErrorScreen')
-    return <SpinnerScreen />
-  } else if (!state.token) {
-    navigation.navigate('AuthScreen')
-    return <SpinnerScreen />
-  } else if (!state.locationName) {
-    navigation.navigate('LocationScreen')
-    return <SpinnerScreen />
-  } else if (!state.inventory) {
-    navigation.navigate('InventoryScreen')
-    return <SpinnerScreen />
-  } else if (state.updateShopify) {
-    navigation.navigate('UpdateScreen')
+  useEffect(() => {
+    if (state.serverError) {
+      navigation.navigate('ErrorScreen')
+    } else if (!state.token) {
+      navigation.navigate('AuthScreen')
+    } else if (!state.locationName) {
+      navigation.navigate('LocationScreen')
+    } else if (!state.inventory) {
+      navigation.navigate('InventoryScreen')
+    } else if (state.updateShopify) {
+      navigation.navigate('UpdateScreen')
+    }
+  })
+
+  if (
+    state.serverError ||
+    !state.token ||
+    !state.locationName ||
+    !state.inventory ||
+    state.updateShopify
+  ) {
     return <SpinnerScreen />
   }
 
