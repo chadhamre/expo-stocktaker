@@ -1,5 +1,5 @@
 import Colors from '../constants/Colors'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { ButtonGroup, CheckBox, Button } from 'react-native-elements'
 import { MaterialIcons, AntDesign } from '@expo/vector-icons'
@@ -45,20 +45,27 @@ export default function ApplyScreen({ navigation }) {
     }, [])
   )
 
-  if (state.serverError) {
-    navigation.navigate('ErrorScreen')
-    return null
-  } else if (!state.token) {
-    navigation.navigate('AuthScreen')
-    return null
-  } else if (!state.locationName) {
-    navigation.navigate('LocationScreen')
-    return null
-  } else if (!state.inventory) {
-    navigation.navigate('InventoryScreen')
-    return null
-  } else if (state.updateShopify) {
-    navigation.navigate('UpdateScreen')
+  useEffect(() => {
+    if (state.serverError) {
+      navigation.navigate('ErrorScreen')
+    } else if (!state.token) {
+      navigation.navigate('AuthScreen')
+    } else if (!state.locationName) {
+      navigation.navigate('LocationScreen')
+    } else if (!state.inventory) {
+      navigation.navigate('InventoryScreen')
+    } else if (state.updateShopify) {
+      navigation.navigate('UpdateScreen')
+    }
+  })
+
+  if (
+    state.serverError ||
+    !state.token ||
+    !state.locationName ||
+    !state.inventory ||
+    state.updateShopify
+  ) {
     return null
   }
 

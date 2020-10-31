@@ -34,6 +34,18 @@ export default function ScanScreen({ navigation }) {
       setHasPermission(status === 'granted')
       // findBarcode('BBBBB')
       // findBarcode('0000001505')
+
+      if (state.serverError) {
+        navigation.navigate('ErrorScreen')
+      } else if (!state.token) {
+        navigation.navigate('AuthScreen')
+      } else if (!state.locationName) {
+        navigation.navigate('LocationScreen')
+      } else if (!state.inventory) {
+        navigation.navigate('InventoryScreen')
+      } else if (state.updateShopify) {
+        navigation.navigate('UpdateScreen')
+      }
     })()
   }, [])
 
@@ -100,23 +112,6 @@ export default function ScanScreen({ navigation }) {
   }
   if (hasPermission === false) {
     return <PermissionsScreen />
-  }
-
-  if (state.serverError) {
-    navigation.navigate('ErrorScreen')
-    return null
-  } else if (!state.token) {
-    navigation.navigate('AuthScreen')
-    return null
-  } else if (!state.locationName) {
-    navigation.navigate('LocationScreen')
-    return null
-  } else if (!state.inventory) {
-    navigation.navigate('InventoryScreen')
-    return null
-  } else if (state.updateShopify) {
-    navigation.navigate('UpdateScreen')
-    return null
   }
 
   return (

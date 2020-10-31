@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import ApplyScreen from '../screens/ApplyScreen'
 import Colors from '../constants/Colors'
 import HomeScreen from '../screens/HomeScreen'
@@ -13,8 +13,10 @@ const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
 
 export default function BottomTabNavigator({ navigation, route }) {
-  navigation.setOptions({
-    headerTitle: getHeaderTitle(route),
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: getHeaderTitle(route),
+    })
   })
 
   return (

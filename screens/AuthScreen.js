@@ -32,7 +32,7 @@ export default function AuthScreen(props) {
     ;(async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
-      // loginToCycleServer('c0955909-61bb-4ba6-a188-39417c87ebb2')
+      // loginToCycleServer('3015a4f5-d3a5-493e-b694-35443bc020d0')
     })()
   }, [])
 
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
   qrImage: {
     margin: 12,
     opacity: 0.2,
-    width: 150,
-    height: 150,
+    width: 50,
+    height: 50,
   },
   centerText: {
     textAlign: 'center',
