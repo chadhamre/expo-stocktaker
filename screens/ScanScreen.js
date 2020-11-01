@@ -94,6 +94,15 @@ export default function ScanScreen({ navigation }) {
       makeNoise(true)
       setLatest(state.inventory[barcode])
       saveGoodScan(barcode)
+    } else if (
+      // Try removing leading zero for 13 character barcodes and looking for a match.
+      barcode.length === 13 &&
+      barcode[0] == 0 &&
+      state.inventory[barcode.substring(1)]
+    ) {
+      makeNoise(true)
+      setLatest(state.inventory[barcode.substring(1)])
+      saveGoodScan(barcode.substring(1))
     } else {
       makeNoise(false)
       const update = { ...blankLatest }
