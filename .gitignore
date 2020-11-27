@@ -2,7 +2,7 @@
 /node_modules
 
 # app
-app/.expo/*
+.expo/*
 *.jks
 *.p8
 *.p12
