@@ -11,10 +11,11 @@ import { useFocusEffect } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   prepareApplyListReducer,
+  removeScannedItemReducer,
   saveButtonIndexReducer,
   toggleIncludeSiblingsReducer,
-  updateShopifyReducer,
   updateDeltaReducer,
+  updateShopifyReducer,
 } from '../redux/reducers'
 
 export default function ApplyScreen({ navigation }) {
@@ -24,6 +25,8 @@ export default function ApplyScreen({ navigation }) {
   const saveButtonIndex = (index) => dispatch(saveButtonIndexReducer(index))
   const toggleIncludeSiblings = () => dispatch(toggleIncludeSiblingsReducer())
   const updateShopify = (status) => dispatch(updateShopifyReducer(status))
+  const removeScannedItem = (barcode) =>
+    dispatch(removeScannedItemReducer(barcode))
   const updateDelta = (barcode, delta) => {
     dispatch(updateDeltaReducer(barcode, delta))
   }
@@ -172,7 +175,7 @@ export default function ApplyScreen({ navigation }) {
 
       const Identifier = () => {
         return (
-          <View style={styles.barcode}>
+          <View style={[styles.barcode]}>
             {display === 1 ? (
               <Text style={[styles.optionLabel, styles.title]}>
                 {item[displayMap[display]]}
@@ -226,7 +229,14 @@ export default function ApplyScreen({ navigation }) {
             }}
             style={[styles.option, isLastOption && styles.lastOption]}
           >
-            <View style={[{ flexDirection: 'row' }, styles.goodBorder]}>
+            <View
+              style={[
+                { flexDirection: 'row' },
+                state.scannedGood.hasOwnProperty(item.barcode)
+                  ? styles.goodBorder
+                  : styles.siblingBorder,
+              ]}
+            >
               <View style={styles.optionTextContainer}>
                 <Identifier />
                 <CountPreview />
@@ -275,9 +285,26 @@ export default function ApplyScreen({ navigation }) {
       }
 
       function Adjuster(item) {
+        const notSibling = state.scannedGood.hasOwnProperty(item.item.barcode)
         return (
           <View style={styles.adjustHolder}>
             <View style={styles.adjust}>
+              {notSibling && (
+                <Button
+                  onPress={() => deleteOrCancel(item.item.barcode)}
+                  buttonStyle={[
+                    styles.smallButton,
+                    { backgroundColor: Colors.dullRed },
+                  ]}
+                  icon={
+                    <AntDesign
+                      name="delete"
+                      size={16}
+                      color={Colors.lightest}
+                    />
+                  }
+                />
+              )}
               <Button
                 onPress={() => {
                   updateDelta(item.item.barcode, newDelta + overwrite)
@@ -287,6 +314,7 @@ export default function ApplyScreen({ navigation }) {
                 }}
                 buttonStyle={[
                   styles.smallButton,
+                  notSibling && styles.buttonSpacing,
                   { backgroundColor: Colors.lightGreen },
                 ]}
                 title={'Save'}
@@ -406,6 +434,28 @@ export default function ApplyScreen({ navigation }) {
       { cancelable: false }
     )
   }
+
+  function deleteOrCancel(barcode) {
+    Alert.alert(
+      'Are you sure?',
+      `This will remove barcode ${barcode} from your scan history.`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            removeScannedItem(barcode)
+            prepareApplyList()
+          },
+        },
+      ],
+      { cancelable: false }
+    )
+  }
 }
 
 const calculateAfter = (
@@ -514,7 +564,12 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   badBorder: {
-    borderLeftColor: 'red',
+    borderLeftColor: Colors.red,
+    borderLeftWidth: 4,
+    paddingLeft: 8,
+  },
+  siblingBorder: {
+    borderLeftColor: Colors.middleLightGrey,
     borderLeftWidth: 4,
     paddingLeft: 8,
   },

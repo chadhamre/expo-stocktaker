@@ -11,24 +11,26 @@ import { SpinnerScreen } from '../components/SpinnerScreen'
 import { TitleText } from '../components/StyledText'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  updateShopifyReducer,
-  clearScannedReducer,
   clearInventoryReducer,
+  clearScannedReducer,
+  updateShopifyReducer,
 } from '../redux/reducers'
 import {
+  ActivityIndicator,
+  Alert,
   Image,
   Platform,
+  SegmentedControlIOSComponent,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
-  SegmentedControlIOSComponent,
 } from 'react-native'
 
 export default function InventoryScreen() {
   // redux
   const state = useSelector((state) => state)
+  const buttonIndex = state.buttonIndex
   const dispatch = useDispatch()
   const updateShopify = (status) => dispatch(updateShopifyReducer(status))
   const clearScanned = () => dispatch(clearScannedReducer())
@@ -112,18 +114,23 @@ export default function InventoryScreen() {
   async function updateInventory() {
     const deltas = []
     const overwrites = []
+    const isOverwrite = buttonIndex == 2
+
     state.applyList.forEach((item) => {
-      if (item.delta !== 0) {
-        deltas.push({
-          id: item.id.split('gid://shopify/InventoryItem/')[1],
-          barcode: item.barcode,
-          delta: item.delta,
-        })
-      } else {
+      const isSibling = !state.scannedGood.hasOwnProperty(item.barcode)
+      const zeroDelta = item.delta === 0
+
+      if (isOverwrite || (isSibling && zeroDelta)) {
         overwrites.push({
           id: item.id.split('gid://shopify/InventoryItem/')[1],
           barcode: item.barcode,
           overwrite: item.overwrite,
+        })
+      } else {
+        deltas.push({
+          id: item.id.split('gid://shopify/InventoryItem/')[1],
+          barcode: item.barcode,
+          delta: item.delta,
         })
       }
     })
@@ -184,23 +191,44 @@ export default function InventoryScreen() {
   }
 
   async function handleSuccess() {
-    fetch(`${Constants.manifest.extra.SERVER_HOST}/api/summary`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${state.token}`,
-      },
-      body: JSON.stringify({
-        batchId: batch,
-        email: state.email,
-      }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        clearInventory(false)
-        clearScanned()
-        updateShopify(false)
-      })
+    Alert.alert(
+      'CSV by Email?',
+      `Do you want a CSV report sent by email?`,
+      [
+        {
+          text: 'No',
+          onPress: () => {
+            clearInventory(false)
+            clearScanned()
+            updateShopify(false)
+          },
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            fetch(`${Constants.manifest.extra.SERVER_HOST}/api/summary`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${state.token}`,
+              },
+              body: JSON.stringify({
+                batchId: batch,
+                email: state.email,
+              }),
+            })
+              .then((response) => response.json())
+              .then((response) => {
+                clearInventory(false)
+                clearScanned()
+                updateShopify(false)
+              })
+          },
+        },
+      ],
+      { cancelable: false }
+    )
   }
 
   function handleFailure() {

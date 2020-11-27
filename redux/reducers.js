@@ -14,6 +14,7 @@ export const CLEAR_INVENTORY = 'CLEAR_INVENTORY'
 export const CLEAR_SCANNED = 'CLEAR_SCANNED'
 export const CLEAR_LOCATION = 'CLEAR_LOCATION'
 export const CLEAR_SERVER_ERROR = 'CLEAR_SERVER_ERROR'
+export const REMOVE_SCANNED_ITEM = 'REMOVE_SCANNED_ITEM'
 export const UPDATE_SHOPIFY = 'UPDATE_SHOPIFY'
 export const UPDATE_DELTA = 'UPDATE_DELTA'
 export const LOGOUT = 'LOGOUT'
@@ -114,6 +115,13 @@ export const clearSiblingsReducer = () => {
 export const clearServerErrorReducer = () => {
   return {
     type: CLEAR_SERVER_ERROR,
+  }
+}
+
+export const removeScannedItemReducer = (barcode) => {
+  return {
+    type: REMOVE_SCANNED_ITEM,
+    barcode,
   }
 }
 
@@ -310,7 +318,10 @@ export default (state = initialState, action) => {
         scannedGood: { ...state.scannedGood },
       }
 
-      newGoodStateUpdated.scannedGood[action.barcode] = Math.abs(action.delta)
+      const absoluteDelta = Math.abs(action.delta)
+      const change = absoluteDelta - (state.scannedGood[action.barcode] || 0)
+      newGoodStateUpdated.scannedGoodTotal = state.scannedGoodTotal + change
+      newGoodStateUpdated.scannedGood[action.barcode] = absoluteDelta
 
       return newGoodStateUpdated
 
@@ -319,6 +330,18 @@ export default (state = initialState, action) => {
         ...state,
         buttonIndex: action.buttonIndex,
       }
+
+    case REMOVE_SCANNED_ITEM:
+      const newGoodStateFiltered = {
+        ...state,
+        scannedGood: { ...state.scannedGood },
+        scannedGoodTotal:
+          state.scannedGoodTotal - state.scannedGood[action.barcode],
+      }
+
+      delete newGoodStateFiltered.scannedGood[action.barcode]
+
+      return newGoodStateFiltered
 
     case CLEAR_SERVER_ERROR:
       return {

@@ -34,6 +34,7 @@ export default function ScanScreen({ navigation }) {
       setHasPermission(status === 'granted')
       // findBarcode('BBBBB')
       // findBarcode('0000001505')
+      // findBarcode('0000001506')
 
       if (state.serverError) {
         navigation.navigate('ErrorScreen')
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
   badBorder: {
-    borderLeftColor: 'red',
+    borderLeftColor: Colors.red,
     borderLeftWidth: 6,
     paddingLeft: 8,
     marginLeft: 16,
