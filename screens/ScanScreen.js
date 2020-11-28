@@ -34,6 +34,8 @@ export default function ScanScreen({ navigation }) {
       setHasPermission(status === 'granted')
       // findBarcode('BBBBB')
       // findBarcode('0000001505')
+      // findBarcode('789456125')
+      // findBarcode('555555557')
       // findBarcode('0000001506')
 
       if (state.serverError) {

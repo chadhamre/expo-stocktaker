@@ -10,7 +10,7 @@ export default {
   lightGreen: '#95BF46',
   lightGrey: '#EAEAEA',
   middleGrey: '#494949',
-  middleLightGrey: '#7E7E7E',
+  middleLightGrey: '#AEAEAE',
   noticeBackground: tintColor,
   noticeText: '#fff',
   dullRed: '#bf5a46',
