@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import TabBarIconWithBadge from '../components/TabBarIconWithBadge'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 import { sharedStyles } from '../constants/Styles'
 
 const BottomTab = createBottomTabNavigator()
@@ -15,7 +16,7 @@ const INITIAL_ROUTE_NAME = 'Home'
 export default function BottomTabNavigator({ navigation, route }) {
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: getHeaderTitle(route),
+      headerTitle: getFocusedRouteNameFromRoute(route),
     })
   })
 
