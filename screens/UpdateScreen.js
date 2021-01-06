@@ -146,6 +146,7 @@ export default function InventoryScreen() {
           location: state.locationId.split('gid://shopify/Location/')[1],
           deltas,
           overwrites,
+          sessionId: state.sessionId,
         }),
       })
         .then((response) => response.json())

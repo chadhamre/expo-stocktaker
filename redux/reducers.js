@@ -41,10 +41,11 @@ export const saveLocationReducer = (selection) => {
   }
 }
 
-export const saveInventoryReducer = (inventory) => {
+export const saveInventoryReducer = (inventory, sessionId) => {
   return {
     type: SAVE_INVENTORY,
     inventory: inventory,
+    sessionId,
   }
 }
 
@@ -160,6 +161,7 @@ const initialState = {
   scannedGood: {},
   scannedGoodTotal: 0,
   serverError: null,
+  sessionId: null,
   shop: null,
   siblings: {},
   token: null,
@@ -193,6 +195,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         inventory: action.inventory,
+        sessionId: action.sessionId,
       }
 
     case UPDATE_SHOPIFY:
