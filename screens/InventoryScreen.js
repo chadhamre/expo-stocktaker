@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Constants from 'expo-constants'
+import 'react-native-get-random-values'
+import { v4 as uuidv4 } from 'uuid'
 
 import { MonoText } from '../components/StyledText'
 import { reloadAsync } from 'expo-updates'
@@ -22,7 +24,8 @@ export default function InventoryScreen({ navigation }) {
   // redux
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
-  const saveInventory = (response) => dispatch(saveInventoryReducer(response))
+  const saveInventory = (response, sessionId) =>
+    dispatch(saveInventoryReducer(response, sessionId))
 
   const requestInventory = async (
     location,
@@ -59,7 +62,8 @@ export default function InventoryScreen({ navigation }) {
           )
         }, 1000)
       } else {
-        saveInventory(inventory.inventory)
+        const sessionId = uuidv4()
+        saveInventory(inventory.inventory, sessionId)
         navigation.navigate('Home')
       }
     } catch (err) {
