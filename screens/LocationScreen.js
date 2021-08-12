@@ -1,9 +1,7 @@
-import Colors from '../constants/Colors'
 import Constants from 'expo-constants'
 import React, { useState, useEffect } from 'react'
 
 import { Button } from 'react-native-elements'
-import { reloadAsync } from 'expo-updates'
 import { saveLocationReducer, saveServerErrorReducer } from '../redux/reducers'
 import { ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
@@ -11,11 +9,7 @@ import { SpinnerScreen } from '../components/SpinnerScreen'
 import { TitleText } from '../components/StyledText'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  Image,
-  Platform,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native'
 
@@ -30,7 +24,7 @@ export default function LocationScreen({ navigation }) {
   const [locationList, setLocationList] = useState(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       await fetch(`${Constants.manifest.extra.SERVER_HOST}/api/locations`, {
         method: 'POST',
         headers: {

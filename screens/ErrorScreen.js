@@ -1,19 +1,14 @@
-import Colors from '../constants/Colors'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import { Button } from 'react-native-elements'
 import { logoutReducer } from '../redux/reducers'
-import { reloadAsync } from 'expo-updates'
 import { ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  Image,
-  Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native'
 

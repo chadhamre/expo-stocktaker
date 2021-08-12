@@ -3,22 +3,9 @@ import Constants from 'expo-constants'
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid'
 
-import { MonoText } from '../components/StyledText'
-import { reloadAsync } from 'expo-updates'
 import { saveInventoryReducer } from '../redux/reducers'
-import { ScrollView } from 'react-native-gesture-handler'
-import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-} from 'react-native'
 
 export default function InventoryScreen({ navigation }) {
   // redux
@@ -74,7 +61,7 @@ export default function InventoryScreen({ navigation }) {
   const [attempts, setAttempts] = useState(0)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const locationId = state.locationId.split('gid://shopify/Location/')[1]
       await requestInventory(
         locationId,

@@ -1,12 +1,10 @@
 import * as Linking from 'expo-linking'
-import Colors from '../constants/Colors'
 import Constants from 'expo-constants'
 import React, { useState, useEffect } from 'react'
 
 import { Audio } from 'expo-av'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import { PermissionsScreen } from '../components/PermissionsScreen'
-import { reloadAsync } from 'expo-updates'
 import { saveAuthReducer } from '../redux/reducers'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
@@ -29,7 +27,7 @@ export default function AuthScreen(props) {
   const [scanned, setScanned] = useState(false)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync()
       setHasPermission(status === 'granted')
       // loginToCycleServer('3015a4f5-d3a5-493e-b694-35443bc020d0')

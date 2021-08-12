@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 
 import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
-import { reloadAsync } from 'expo-updates'
 import { ScrollView } from 'react-native-gesture-handler'
 import { sharedStyles } from '../constants/Styles'
 import { SpinnerScreen } from '../components/SpinnerScreen'
@@ -16,14 +15,9 @@ import {
   updateShopifyReducer,
 } from '../redux/reducers'
 import {
-  ActivityIndicator,
   Alert,
-  Image,
-  Platform,
-  SegmentedControlIOSComponent,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native'
 
@@ -43,7 +37,7 @@ export default function InventoryScreen() {
   const [batch, setBatch] = useState(null)
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (!batch) {
         await updateInventory()
       } else {
