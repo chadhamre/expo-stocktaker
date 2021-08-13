@@ -9,19 +9,18 @@ import ErrorScreen from './screens/ErrorScreen'
 import InventoryScreen from './screens/InventoryScreen'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
 import LocationScreen from './screens/LocationScreen'
-import React, { useState, setState, useEffect } from 'react'
+import React from 'react'
 import UpdateScreen from './screens/UpdateScreen'
 import useCachedResources from './hooks/useCachedResources'
 
 import { createStackNavigator } from '@react-navigation/stack'
 import { getStore, getPersistor } from './redux/store'
-import { NavigationContainer, useFocusEffect } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import { PersistGate } from 'redux-persist/integration/react'
-import { Platform, StatusBar, StyleSheet, View, Image } from 'react-native'
+import { View } from 'react-native'
 import { Provider as StoreProvider } from 'react-redux'
 import { sharedStyles } from './constants/Styles'
-import { SpinnerScreen } from './components/SpinnerScreen'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const MainStack = createStackNavigator()
 const RootStack = createStackNavigator()
